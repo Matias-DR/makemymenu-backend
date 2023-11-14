@@ -15,13 +15,13 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/user', userRouter)
 
-const PORT: number = parseInt(process.env.PORT ?? '3000')
-const HOST: string = process.env.HOST ?? 'localhost'
+const EXPRESS_SERVER_PORT: number = parseInt(process.env.PORT ?? '3000')
+const EXPRESS_SERVER_HOST: string = process.env.HOST ?? 'localhost'
 
 // Start app
 app
-  .listen(PORT, HOST, () => {
-    console.log(`Server is running on port ${PORT}.`)
+  .listen(EXPRESS_SERVER_PORT, EXPRESS_SERVER_HOST, () => {
+    console.log(`Server is running on port ${EXPRESS_SERVER_PORT}.`)
   })
   .on('error', (err: any) => {
     if (err.code === 'EADDRINUSE') {
