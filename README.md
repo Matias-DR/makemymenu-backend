@@ -2,9 +2,7 @@
 
 ¡Bienvenido!
 
-## Descripción
-
-Este proyecto permite a través de varias [API](https://es.wikipedia.org/wiki/API) administrar el ABM de usuarios y sus sesiones.
+Este proyecto permite a través de varias [APIs](https://es.wikipedia.org/wiki/API) administrar el ABM de usuarios.
 
 ## Requisitos previos
 
@@ -45,7 +43,13 @@ En la raíz del proyecto, cree un archivo con el nombre ".env"
   ```
 ## Ejecución
 
-Levantar servidor y base de datos:
+1. Posiciónate sobre el proyecto:
+
+  ```bash
+  cd ./makemymenu-backend
+  ```
+
+2. Ejecuta y establece las conexiones del servidor y la base de datos
 
   ```bash
   pnpm run start
