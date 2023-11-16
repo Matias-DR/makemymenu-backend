@@ -19,7 +19,7 @@ export default async function getByIdController (
   )
   try {
     const result = await controller.exe()
-    res.json(result)
+    res.status(200).json(result)
   } catch (error: any) {
     next(error.message)
   }
