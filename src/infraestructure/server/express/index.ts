@@ -1,7 +1,7 @@
 import { userRouter } from './routes'
 import express, { type Application } from 'express'
 import cors, { type CorsOptions } from 'cors'
-import 'dotenv'
+import 'dotenv/config'
 
 const app: Application = express()
 
@@ -15,8 +15,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/user', userRouter)
 
-const EXPRESS_SERVER_PORT: number = parseInt(process.env.PORT ?? '3000')
-const EXPRESS_SERVER_HOST: string = process.env.HOST ?? 'localhost'
+const EXPRESS_SERVER_PORT: number = parseInt(process.env.EXPRESS_SERVER_PORT ?? '3000')
+const EXPRESS_SERVER_HOST: string = process.env.EXPRESS_SERVER_HOST ?? 'localhost'
 
 // Start app
 app
