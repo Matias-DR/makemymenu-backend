@@ -38,6 +38,7 @@ En la raíz del proyecto, cree un archivo con el nombre ".env"
 
   ```bash
   MONGODB_URI=<mongodb-cluster-connection-string>
+  MONGODB_DEFAULT_DB=<db-name-in-mongodb-cluster>
   EXPRESS_SERVER_PORT=<custom-port>|3000
   EXPRESS_SERVER_HOST=<custom-server-host>|localhost
   ```

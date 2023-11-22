@@ -1,7 +1,8 @@
 import {
   Schema,
-  model
+  connection
 } from 'mongoose'
+import 'dotenv/config'
 
 class UserModelScheme {
   exe (): Schema {
@@ -26,4 +27,10 @@ class UserModelScheme {
   }
 }
 
-export default model('Users', new UserModelScheme().exe())
+connection.openUri(process.env.MONGODB_URI as string)
+  .then(() => {})
+  .catch(() => {})
+
+const database = connection.useDb(process.env.MONGODB_MAKEMYMENU_DB as string)
+
+export default database.model('Users', new UserModelScheme().exe())

@@ -7,6 +7,6 @@ if (process.env.MONGODB_URI === null || process.env.MONGODB_URI === undefined) {
 }
 const uri = process.env.MONGODB_URI
 
-const clientPromise = mongoose.connect(uri)
+const connection = mongoose.connect(uri)
 
-export default clientPromise
+export default connection
