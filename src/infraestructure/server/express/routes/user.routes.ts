@@ -11,5 +11,6 @@ router.get('/get-by-id', sharedControllers.getByIdController)
 router.get('/get-by-email', userControllers.userGetByEmailController)
 router.patch('/update', userControllers.userUpdateController)
 router.delete('/delete', userControllers.userDeleteByIdController)
+router.post('/sign-in', userControllers.userSignInController)
 
 export default router

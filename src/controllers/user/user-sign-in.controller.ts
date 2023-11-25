@@ -1,18 +1,18 @@
 import type { UserEntity } from 'domain/entities'
 import { type UserRepository } from 'domain/repositories'
-import { UserDeleteUseCase } from 'application/use-cases/user'
+import { UserSignInUseCase } from 'application/use-cases/user'
 
-export default class UserDeleteByIdController {
+export default class UserSignInController {
   constructor (
     private readonly repository: UserRepository,
     private readonly data: any
   ) { }
 
   async exe (): Promise<UserEntity> {
-    const useCase = new UserDeleteUseCase(this.repository)
+    const useCase = new UserSignInUseCase(this.repository)
 
     const form = {
-      id: this.data.id,
+      email: this.data.email,
       password: this.data.password
     }
 

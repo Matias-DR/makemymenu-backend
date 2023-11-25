@@ -1,5 +1,5 @@
 import { type UserRepository } from 'domain/repositories'
-import * as userControllers from 'controllers/user'
+import { UserGetByEmailController } from 'controllers/user'
 import { UserRepositoryImplementation } from 'infraestructure/database/mongodb/implementations/repositories'
 import type {
   Request,
@@ -13,7 +13,7 @@ export default async function userGetByEmailController (
   next: NextFunction
 ): Promise<void> {
   const repository: UserRepository = new UserRepositoryImplementation()
-  const controller = new userControllers.UserGetByEmailController(
+  const controller = new UserGetByEmailController(
     repository,
     req.query
   )

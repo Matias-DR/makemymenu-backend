@@ -18,8 +18,8 @@ export default class UserUpdateController {
       newPasswordConfirmation: this.data.newPasswordConfirmation
     }
 
-    const userUpdateUseCase = new UserUpdateUseCase(this.repository)
-    const res = await userUpdateUseCase.exe(form)
+    const useCase = new UserUpdateUseCase(this.repository)
+    const res = await useCase.exe(form)
     return res
   }
 }

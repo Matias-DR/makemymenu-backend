@@ -14,8 +14,8 @@ export default class UserCreateController {
       password: this.data.password,
       passwordConfirmation: this.data.passwordConfirmation
     }
-    const userCreateUseCase = new UserCreateUseCase(this.repository)
-    const res = await userCreateUseCase.exe(form)
+    const useCase = new UserCreateUseCase(this.repository)
+    const res = await useCase.exe(form)
     return res
   }
 }

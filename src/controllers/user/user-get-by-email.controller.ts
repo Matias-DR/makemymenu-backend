@@ -9,8 +9,8 @@ export default class UserGetByEmailController {
   ) { }
 
   async exe (): Promise<UserEntity> {
-    const userGetByEmailService = new UserGetByEmailService(this.repository)
-    const res = await userGetByEmailService.exe(this.data.email)
+    const service = new UserGetByEmailService(this.repository)
+    const res = await service.exe(this.data.email)
     return res
   }
 }

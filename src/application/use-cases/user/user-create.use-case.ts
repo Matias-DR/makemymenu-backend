@@ -7,6 +7,7 @@ import { AlreadyExistOperationException } from 'domain/exceptions/operation.exce
 import { type UserRepository } from 'domain/repositories'
 import { type UserCreateUseCaseInput } from 'domain/inputs/use-cases/user'
 import { UserExistByEmailService } from 'application/services/user'
+import { hash } from 'bcrypt'
 
 export default class UserCreateUseCase {
   constructor (private readonly repository: UserRepository) { }
@@ -17,15 +18,15 @@ export default class UserCreateUseCase {
 
     password.passwordConfirmMatchTest(input.passwordConfirmation)
 
-    const form = {
-      email: email.value,
-      password: password.value
+    if (await new UserExistByEmailService(this.repository).exe(email.value)) {
+      throw new AlreadyExistOperationException()
     }
 
-    if (
-      await new UserExistByEmailService(this.repository).exe(email.value)
-    ) {
-      throw new AlreadyExistOperationException()
+    const hashedPassword = await hash(password.value, 10)
+
+    const form = {
+      email: email.value,
+      password: hashedPassword
     }
 
     const res = await this.repository.createUser(form)

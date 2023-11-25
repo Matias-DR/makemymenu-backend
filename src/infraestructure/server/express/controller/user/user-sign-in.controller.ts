@@ -1,5 +1,5 @@
 import { type UserRepository } from 'domain/repositories'
-import { UserDeleteByIdController } from 'controllers/user'
+import { UserSignInController } from 'controllers/user'
 import { UserRepositoryImplementation } from 'infraestructure/database/mongodb/implementations/repositories'
 import type {
   Request,
@@ -7,15 +7,15 @@ import type {
   NextFunction
 } from 'express'
 
-export default async function userDeleteByIdController (
+export default async function userSignInController (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   const repository: UserRepository = new UserRepositoryImplementation()
-  const controller = new UserDeleteByIdController(
+  const controller = new UserSignInController(
     repository,
-    req.query
+    req.body
   )
   try {
     const result = await controller.exe()
