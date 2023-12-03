@@ -15,7 +15,7 @@ export default async function userGetByEmailController (
   const repository: UserRepository = new UserRepositoryImplementation()
   const controller = new UserGetByEmailController(
     repository,
-    req.query
+    req.params
   )
   try {
     const result = await controller.exe()
