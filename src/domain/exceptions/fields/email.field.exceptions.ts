@@ -12,7 +12,7 @@ export class SameEmailFieldException extends Error {
 
 export class InvalidEmailFieldException extends Error {
   constructor () {
-    super('Invalid email, it must have a valid format. For example: ex@ex.ex')
+    super('Invalid email')
   }
 }
 

@@ -3,14 +3,12 @@ import { UserUpdateController } from 'controllers/user'
 import { UserRepositoryImplementation } from 'infraestructure/database/mongodb/implementations/repositories'
 import type {
   Request,
-  Response,
-  NextFunction
+  Response
 } from 'express'
 
 export default async function userUpdateController (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> {
   const repository: UserRepository = new UserRepositoryImplementation()
   const controller = new UserUpdateController(
@@ -22,6 +20,5 @@ export default async function userUpdateController (
     res.status(200).json(result)
   } catch (error: any) {
     res.status(500).json(error.message)
-    // next(error.message)
   }
 }

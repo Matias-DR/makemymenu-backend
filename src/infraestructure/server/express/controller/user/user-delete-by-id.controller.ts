@@ -3,25 +3,22 @@ import { UserDeleteByIdController } from 'controllers/user'
 import { UserRepositoryImplementation } from 'infraestructure/database/mongodb/implementations/repositories'
 import type {
   Request,
-  Response,
-  NextFunction
+  Response
 } from 'express'
 
 export default async function userDeleteByIdController (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> {
   const repository: UserRepository = new UserRepositoryImplementation()
   const controller = new UserDeleteByIdController(
     repository,
-    req.query
+    req.body
   )
   try {
     const result = await controller.exe()
     res.status(200).json(result)
   } catch (error: any) {
     res.status(500).json(error.message)
-    // next(error.message)
   }
 }

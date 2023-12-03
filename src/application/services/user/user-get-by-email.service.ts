@@ -6,7 +6,7 @@ export default class UserGetByEmailService {
   constructor (private readonly userRepository: UserRepository) {}
 
   async exe (email: string): Promise<UserEntity> {
-    const res = await this.userRepository.getUserByEmail(email)
+    const res = await this.userRepository.getByEmail(email)
     if (res !== null && res !== undefined) {
       return res
     }

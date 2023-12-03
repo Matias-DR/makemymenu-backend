@@ -1,19 +1,17 @@
 import { type UserRepository } from 'domain/repositories'
-import { UserSignInController } from 'controllers/user'
+import { AuthSignInController } from 'controllers/auth'
 import { UserRepositoryImplementation } from 'infraestructure/database/mongodb/implementations/repositories'
 import type {
   Request,
-  Response,
-  NextFunction
+  Response
 } from 'express'
 
 export default async function userSignInController (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> {
   const repository: UserRepository = new UserRepositoryImplementation()
-  const controller = new UserSignInController(
+  const controller = new AuthSignInController(
     repository,
     req.body
   )
@@ -22,6 +20,5 @@ export default async function userSignInController (
     res.status(200).json(result)
   } catch (error: any) {
     res.status(500).json(error.message)
-    // next(error.message)
   }
 }

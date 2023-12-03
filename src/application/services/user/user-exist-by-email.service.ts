@@ -5,7 +5,7 @@ export default class UserExistByEmailService {
 
   async exe (email: string): Promise<boolean> {
     try {
-      const res = await this.userRepository.getUserByEmail(email)
+      const res = await this.userRepository.getByEmail(email)
       return res !== null || res !== undefined
     } catch (error) {
       return false

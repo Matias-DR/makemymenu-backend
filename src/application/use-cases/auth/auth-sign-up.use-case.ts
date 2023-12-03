@@ -4,21 +4,27 @@ import {
   PasswordField
 } from 'domain/fields'
 import { AlreadyExistOperationException } from 'domain/exceptions/operation.exceptions'
-import { type UserRepository } from 'domain/repositories'
-import { type UserCreateUseCaseInput } from 'domain/inputs/use-cases/user'
+import {
+  type AuthRepository,
+  type UserRepository
+} from 'domain/repositories'
+import { type AuthSignUpUseCaseInput } from 'domain/inputs/use-cases/auth'
 import { UserExistByEmailService } from 'application/services/user'
 import { hash } from 'bcrypt'
 
-export default class UserCreateUseCase {
-  constructor (private readonly repository: UserRepository) { }
+export default class AuthSignUpUseCase {
+  constructor (
+    private readonly authRepository: AuthRepository,
+    private readonly userRepository: UserRepository
+  ) { }
 
-  async exe (input: UserCreateUseCaseInput): Promise<UserEntity> {
+  async exe (input: AuthSignUpUseCaseInput): Promise<UserEntity> {
     const email = new EmailField(input.email)
     const password = new PasswordField(input.password)
 
     password.passwordConfirmMatchTest(input.passwordConfirmation)
 
-    if (await new UserExistByEmailService(this.repository).exe(email.value)) {
+    if (await new UserExistByEmailService(this.userRepository).exe(email.value)) {
       throw new AlreadyExistOperationException()
     }
 
@@ -29,7 +35,7 @@ export default class UserCreateUseCase {
       password: hashedPassword
     }
 
-    const res = await this.repository.createUser(form)
+    const res = await this.authRepository.signUp(form)
     return res
   }
 }

@@ -3,7 +3,10 @@ import {
   EmailField,
   PasswordField
 } from 'domain/fields'
-import { NewEmailAlreadyInUseFieldException } from 'domain/exceptions/fields/email.field.exceptions'
+import {
+  NewEmailAlreadyInUseFieldException,
+  InvalidEmailFieldException
+} from 'domain/exceptions/fields/email.field.exceptions'
 import {
   TheNewPasswordIsTheSameAsTheCurrentFieldException,
   WrongPasswordFieldException
@@ -18,6 +21,10 @@ import {
   UserExistByEmailService
 } from 'application/services/user'
 import { type UserUpdateUseCaseInput } from 'domain/inputs/use-cases/user'
+import {
+  compare,
+  hash
+} from 'bcrypt'
 
 export default class UserUpdateUseCase {
   constructor (private readonly userRepository: UserRepository) { }
@@ -27,6 +34,11 @@ export default class UserUpdateUseCase {
 
     // Si no existe levanto error
     const userById = await userGetByIdService.exe(input.id)
+
+    // Si el email es incorrecto levanto error
+    if (userById.email !== input.email) {
+      throw new InvalidEmailFieldException()
+    }
 
     // Si no hay nada para actualizar levanto error
     if (
@@ -60,12 +72,21 @@ export default class UserUpdateUseCase {
       }
     }
 
+    console.log('estas son las contraseñas', input.password, userById.password)
     // Si la contraseña es incorrecta, levanto error
-    if (userById.password !== input.password) {
+    if (!await compare(input.password, userById.password)) {
       throw new WrongPasswordFieldException()
     }
 
-    const res = await this.userRepository.updateUser(user.entity())
+    const hashedPassword = await hash(user.password.value, 10)
+
+    const form = {
+      id: user.id,
+      email: user.email.value,
+      password: hashedPassword
+    }
+
+    const res = await this.userRepository.update(form)
     return res
   }
 }
