@@ -66,10 +66,10 @@ body request:
   password:123qwe78,
   passwordConfirmation:123qwe78
 }
+```
 
 response:
 [UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-```
 
 - POST /api/auth/sign-in
 ```
@@ -78,22 +78,20 @@ body request:
   email:ex00@ex.com
   password:123qwe78
 }
+```
 
 response:
 [UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-```
 
 - GET /api/user/id/&lt;id&gt;
-```
+
 response:
 [UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-```
 
 - GET /api/user/email/&lt;email&gt;
-```
+
 response:
 [UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-```
 
 - DELETE /api/user
 ```
@@ -102,10 +100,10 @@ body request:
   id:<id>
   password:123qwe78
 }
+```
 
 response:
 [UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-```
 
 - PATCH /api/user
 ```
@@ -118,10 +116,10 @@ body request:
   newPassword:123qwe78_
   newPasswordConfirmation:123qwe78_
 }
+```
 
 response:
 [UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-```
 
 #
 
