@@ -68,8 +68,8 @@ body request:
 }
 ```
 
-`response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error`
+response:
+[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
 
 - POST /api/auth/sign-in
 ```
@@ -80,18 +80,18 @@ body request:
 }
 ```
 
-`response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error`
+response:
+[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
 
 - GET /api/user/id/&lt;id&gt;
 
-`response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error`
+response:
+[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
 
 - GET /api/user/email/&lt;email&gt;
 
-`response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error`
+response:
+[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
 
 - DELETE /api/user
 ```
@@ -102,8 +102,8 @@ body request:
 }
 ```
 
-`response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error`
+response:
+[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
 
 - PATCH /api/user
 ```
@@ -118,8 +118,8 @@ body request:
 }
 ```
 
-`response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error`
+response:
+[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
 
 #
 
