@@ -3,7 +3,7 @@
 import {
   authSignUpController,
   authSignInController
-} from 'infraestructure/server/express/controller/auth'
+} from 'infraestructure/server/express/controllers/auth'
 import { Router } from 'express'
 
 const router = Router()

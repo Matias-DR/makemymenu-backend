@@ -4,8 +4,8 @@ import {
   userDeleteByIdController,
   userGetByEmailController,
   userUpdateController
-} from 'infraestructure/server/express/controller/user'
-import { getByIdController } from 'infraestructure/server/express/controller/shared'
+} from 'infraestructure/server/express/controllers/user'
+import { getByIdController } from 'infraestructure/server/express/controllers/shared'
 import { Router } from 'express'
 
 const router = Router()
