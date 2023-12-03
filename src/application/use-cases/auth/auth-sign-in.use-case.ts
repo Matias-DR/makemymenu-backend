@@ -8,6 +8,8 @@ import { type UserRepository } from 'domain/repositories'
 import { type AuthSignInUseCaseInput } from 'domain/inputs/use-cases/auth'
 import { UserGetByEmailService } from 'application/services/user'
 import { compare } from 'bcrypt'
+import { sign } from 'jsonwebtoken'
+import 'dotenv/config'
 
 export default class AuthSignInUseCase {
   constructor (private readonly repository: UserRepository) { }
@@ -21,10 +23,21 @@ export default class AuthSignInUseCase {
       throw new WrongPasswordFieldException()
     }
 
-    const res = await new UserGetByEmailService(this.repository).exe(email.value)
+    const user = await new UserGetByEmailService(this.repository).exe(email.value)
 
-    if (!await compare(password.value, res.password)) {
+    if (!await compare(password.value, user.password)) {
       throw new WrongPasswordFieldException()
+    }
+
+    const token = sign(
+      { id: user.id },
+      process.env.JWT_SECRET as string,
+      { expiresIn: 60 * 60 * 24 * 30 }
+    )
+
+    const res = {
+      ...user,
+      token
     }
 
     return res
