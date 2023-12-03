@@ -58,12 +58,50 @@ En la raíz del proyecto, cree un archivo con el nombre ".env"
 
 ## APIs
 
-- POST    /auth/sign-up
-- POST    /auth/sign-in
-- GET     /user/id
-- GET     /user/email
-- DELETE  /user
-- PATCH   /user
+- POST /api/auth/sign-up
+```
+body:
+{
+  email:ex00@ex.com,
+  password:123qwe78,
+  passwordConfirmation:123qwe78
+}
+```
+
+- POST /api/auth/sign-in
+```
+body:
+{
+  email:ex00@ex.com
+  password:123qwe78
+}
+```
+
+- GET /api/user/id/<id>
+
+- GET /api/user/email/<email>
+
+- DELETE /api/user
+```
+body:
+{
+  id:<id>
+  password:123qwe78
+}
+```
+
+- PATCH /api/user
+```
+body:
+{
+  id:<id>
+  email:ex00@ex.com
+  password:123qwe78
+  newEmail:ex00@ex.com_
+  newPassword:123qwe78_
+  newPasswordConfirmation:123qwe78_
+}
+```
 
 #
 
