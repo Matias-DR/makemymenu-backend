@@ -77,9 +77,9 @@ body:
 }
 ```
 
-- GET /api/user/id/<id>
+- GET /api/user/id/&lt;id&gt;
 
-- GET /api/user/email/<email>
+- GET /api/user/email/&lt;email&gt;
 
 - DELETE /api/user
 ```
