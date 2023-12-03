@@ -58,12 +58,12 @@ En la raíz del proyecto, cree un archivo con el nombre ".env"
 
 ## [APIs](https://api.postman.com/collections/27588376-fcadbcc3-ea79-4ea7-9d7f-77940e6a6ccc?access_key=PMAT-01HGRN3KQ3EMXYYPBPKXNS7TG0)
 
-POST    /auth/sign-up
-POST    /auth/sign-in
-GET     /user/id
-GET     /user/email
-DELETE  /user
-PATCH   /user
+- POST    /auth/sign-up
+- POST    /auth/sign-in
+- GET     /user/id
+- GET     /user/email
+- DELETE  /user
+- PATCH   /user
 
 #
 
