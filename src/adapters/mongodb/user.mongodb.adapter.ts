@@ -44,8 +44,11 @@ export default class UserMongoDBAdapter implements UserAdapter {
 
     const res = await this.useCases.update(input)
 
-    // const output = { }
+    const output = {
+      id: res.id,
+      email: res.email
+    }
 
-    return res
+    return output
   }
 }
