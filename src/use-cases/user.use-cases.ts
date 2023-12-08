@@ -110,6 +110,7 @@ export default class UserUseCases {
     }
 
     const res = await this.userRepository.update(form)
+    console.log('RES DE USER.REPOSITORY EN USER.USE-CASE.UPDATE', res)
     return res
   }
 }

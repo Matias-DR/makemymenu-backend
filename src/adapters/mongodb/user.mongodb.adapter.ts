@@ -32,7 +32,10 @@ export default class UserMongoDBAdapter implements UserAdapter {
     await this.useCases.deleteById(input)
   }
 
-  async update (data: any): Promise<UserEntity> {
+  async update (data: any): Promise<{
+    id: string
+    email: string
+  }> {
     const input = {
       id: data.id,
       email: data.email,

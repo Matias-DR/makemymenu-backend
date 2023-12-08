@@ -8,6 +8,11 @@ import {
 export default class SessionServices {
   constructor (private readonly repository: SessionRepository) { }
 
+  async existByAccessToken (accessToken: string): Promise<boolean> {
+    const session = await this.repository.getByAccessToken(accessToken)
+    return session !== null || session !== undefined
+  }
+
   async updateTokens (refreshToken: string): Promise<{
     accessToken: string
     refreshToken: string
@@ -17,11 +22,13 @@ export default class SessionServices {
       accessToken: ''
     }
 
-    if (await this.repository.existByRefresh(refreshToken)) {
+    const session = await this.repository.getByRefreshToken(refreshToken)
+
+    if (session !== null && session !== undefined) {
       const decodedData = decodeToken(refreshToken)
       const data = {
-        email: decodedData.email,
-        id: decodedData.id
+        id: decodedData.id,
+        email: decodedData.email
       }
 
       newTokens.refreshToken = createRefreshToken(data)
@@ -38,7 +45,9 @@ export default class SessionServices {
 
   async updateAccessToken (refreshToken: string): Promise<string> {
     let newAccessToken = ''
-    if (await this.repository.existByRefresh(refreshToken)) {
+    const session = await this.repository.getByRefreshToken(refreshToken)
+
+    if (session !== null && session !== undefined) {
       const decodedData = decodeToken(refreshToken)
       const data = {
         id: decodedData.id,

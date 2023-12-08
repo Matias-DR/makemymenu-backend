@@ -1,5 +1,6 @@
 export default interface SessionRepository {
-  existByRefresh: (refreshToken: string) => Promise<boolean>
+  getByRefreshToken: (refreshToken: string) => Promise<any>
+  getByAccessToken: (accessToken: string) => Promise<any>
   updateTokens: (
     refreshToken: string,
     newTokens: {

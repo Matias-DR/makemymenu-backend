@@ -11,6 +11,10 @@ export default class SessionMongoDBAdapter implements SessionAdapter {
     this.services = new SessionServices(this.repository)
   }
 
+  async existByAccessToken (accessToken: string): Promise<boolean> {
+    return await this.services.existByAccessToken(accessToken)
+  }
+
   async updateTokens (data: any): Promise<{
     accessToken: string
     refreshToken: string

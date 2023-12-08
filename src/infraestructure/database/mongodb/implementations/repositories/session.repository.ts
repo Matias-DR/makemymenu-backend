@@ -6,9 +6,18 @@ import type { SessionRepository } from 'domain/repositories'
 import { SessionModelImplementation } from 'infraestructure/database/mongodb/implementations/models'
 
 export default class SessionMongoDBRepositoryImplementation implements SessionRepository {
-  async existByRefresh (refreshToken: string): Promise<boolean> {
+  async getByRefreshToken (refreshToken: string): Promise<any> {
     try {
       const result = await SessionModelImplementation.findOne({ refreshToken })
+      return result
+    } catch (error) {
+      throw new NotFoundOperationException()
+    }
+  }
+
+  async getByAccessToken (accessToken: string): Promise<any> {
+    try {
+      const result = await SessionModelImplementation.findOne({ accessToken })
       return result === undefined || result === null
     } catch (error) {
       throw new NotFoundOperationException()
