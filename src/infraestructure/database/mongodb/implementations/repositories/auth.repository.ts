@@ -1,18 +1,17 @@
-import type { UserEntity } from 'domain/entities'
 import {
   AlreadyExistOperationException,
   UnsuccessfulOperationException
 } from 'domain/exceptions/operation.exceptions'
 import { type AuthRepository } from 'domain/repositories'
-import { type AuthSignUpRepositoryInput } from 'domain/inputs/repositories/auth'
-import { UserModelImplementation } from 'infraestructure/database/mongodb/implementations/models'
-import { UserOutputAdapter } from 'infraestructure/database/mongodb/adapters/output'
+import {
+  SessionModelImplementation,
+  UserModelImplementation
+} from 'infraestructure/database/mongodb/implementations/models'
 
-export default class AuthRepositoryImplementation implements AuthRepository {
-  async signUp (form: AuthSignUpRepositoryInput): Promise<UserEntity> {
+export default class AuthMongoDBRepositoryImplementation implements AuthRepository {
+  private async operate (operation: () => Promise<void>): Promise<void> {
     try {
-      const res = await UserModelImplementation.create(form)
-      return new UserOutputAdapter(res.toJSON()).exe()
+      await operation()
     } catch (error: any) {
       if (Boolean(error.code) && error.code === 11000) {
         throw new AlreadyExistOperationException()
@@ -27,5 +26,25 @@ export default class AuthRepositoryImplementation implements AuthRepository {
         }
       }
     }
+  }
+
+  async signUp (input: {
+    email: string
+    password: string
+  }): Promise<void> {
+    const operation = async (): Promise<void> => {
+      await UserModelImplementation.create(input)
+    }
+    await this.operate(operation)
+  }
+
+  async signIn (input: {
+    refreshToken: string
+    accessToken: string
+  }): Promise<void> {
+    const operation = async (): Promise<void> => {
+      await SessionModelImplementation.create(input)
+    }
+    await this.operate(operation)
   }
 }

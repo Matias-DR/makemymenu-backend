@@ -5,17 +5,16 @@ import {
 } from 'domain/exceptions/operation.exceptions'
 import { type UserRepository } from 'domain/repositories'
 import { UserModelImplementation } from 'infraestructure/database/mongodb/implementations/models'
-import { UserOutputAdapter } from 'infraestructure/database/mongodb/adapters/output'
 import { Error } from 'mongoose'
 
-export default class UserRepositoryImplementation implements UserRepository {
+export default class UserMongoDBRepositoryImplementation implements UserRepository {
   async getByEmail (email: string): Promise<UserEntity> {
     try {
       const res = await UserModelImplementation.findOne({ email })
       if (res === null || res === undefined) {
         throw new NotFoundOperationException()
       } else {
-        return new UserOutputAdapter(res.toJSON()).exe()
+        return await res.toJSON()
       }
     } catch (error) {
       if (!(error instanceof NotFoundOperationException)) {
@@ -38,7 +37,7 @@ export default class UserRepositoryImplementation implements UserRepository {
       if (res === null || res === undefined) {
         throw new NotFoundOperationException()
       } else {
-        return new UserOutputAdapter(res.toJSON()).exe()
+        return await res.toJSON()
       }
     } catch (error) {
       if (!(error instanceof NotFoundOperationException)) {
@@ -50,13 +49,13 @@ export default class UserRepositoryImplementation implements UserRepository {
 
   async update (form: UserEntity): Promise<UserEntity> {
     try {
-      const res = await UserModelImplementation.findOneAndUpdate(
+      const res = await UserModelImplementation.findByIdAndUpdate(
         { _id: form.id },
         { $set: { ...form } },
         { runValidators: true, new: true }
       )
       if (res !== null && res !== undefined) {
-        return new UserOutputAdapter(res.toJSON()).exe()
+        return await res.toJSON()
       } else {
         throw new NotFoundOperationException()
       }
@@ -67,11 +66,11 @@ export default class UserRepositoryImplementation implements UserRepository {
 
   async deleteById (id: string): Promise<UserEntity> {
     try {
-      const res = await UserModelImplementation.findOneAndDelete({ _id: id })
+      const res = await UserModelImplementation.findByIdAndDelete(id)
       if (res === null || res === undefined) {
         throw new NotFoundOperationException()
       } else {
-        return new UserOutputAdapter(res.toJSON()).exe()
+        return await res.toJSON()
       }
     } catch (error) {
       throw new UnsuccessfulOperationException()

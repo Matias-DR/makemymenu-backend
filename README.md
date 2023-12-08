@@ -40,6 +40,7 @@ En la raíz del proyecto, cree un archivo con el nombre ".env"
   MONGODB_URI=<mongodb-cluster-connection-string> // Por ejemplo: mongodb+srv://<usuario>:<contraseña>@cluster.<codigo-de-cluster>.mongodb.net/<nombre-de-db-dentro-del-cluster>?retryWrites=true&w=majority
   EXPRESS_SERVER_PORT=<custom-port>|3000
   EXPRESS_SERVER_HOST=<custom-server-host>|localhost
+  JWT_SECRET=<secret-string>
   ```
 
 ## Ejecución

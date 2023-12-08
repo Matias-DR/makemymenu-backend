@@ -1,2 +1,3 @@
-export { default as UserRepositoryImplementation } from './user.repository'
-export { default as AuthRepositoryImplementation } from './auth.repository'
+export { default as UserMongoDBRepositoryImplementation } from './user.repository'
+export { default as AuthMongoDBRepositoryImplementation } from './auth.repository'
+export { default as SessionMongoDBRepositoryImplementation } from './session.repository'

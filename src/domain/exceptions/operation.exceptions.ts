@@ -1,30 +1,51 @@
-export class AlreadyExistOperationException extends Error {
+import { Exception } from './exception'
+
+export class NotFoundOperationException extends Exception {
   constructor () {
-    super('Data already exist.')
+    super(
+      'Data not found.',
+      0,
+      'Datos no encontrados.'
+    )
   }
 }
 
-export class NotFoundOperationException extends Error {
+export class UnsuccessfulOperationException extends Exception {
   constructor () {
-    super('Data not found.')
+    super(
+      'An error has occurred. Unsuccessful operation',
+      1,
+      'Ha ocurrido un error. Operación fallida.'
+    )
   }
 }
 
-export class NothingToUpdateOperationException extends Error {
+export class AlreadyExistOperationException extends Exception {
   constructor () {
-    super('Nothing to updated.')
+    super(
+      'Data already exist.',
+      2,
+      'Los datos ya existen.'
+    )
   }
 }
 
-export class UnsuccessfulOperationException extends Error {
+export class NothingToUpdateOperationException extends Exception {
   constructor () {
-    super('An error has occurred. Unsuccessful operation')
+    super(
+      'Nothing to updated.',
+      3,
+      'Nada que actualizar.'
+    )
   }
 }
 
-export default {
-  AlreadyExistOperationException,
-  NotFoundOperationException,
-  NothingToUpdateOperationException,
-  UnsuccessfulOperationException
+export class ImpossibleToPerformOperationException extends Exception {
+  constructor () {
+    super(
+      'Impossible to perform the operation.',
+      4,
+      'Imposible realizar la operación.'
+    )
+  }
 }

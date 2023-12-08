@@ -1,30 +1,52 @@
-export class TheNewEmailIsTheSameAsTheCurrentFieldException extends Error {
+import { Exception } from '../exception'
+
+export class TheNewEmailIsTheSameAsTheCurrentFieldException extends Exception {
   constructor () {
-    super('To update the email, it must be different from the current one.')
+    super(
+      'To update the email, it must be different from the current one.',
+      200,
+      'Para actualizar el correo electrónico, este debe ser diferente al actual.'
+    )
   }
 }
 
-export class SameEmailFieldException extends Error {
+export class SameEmailFieldException extends Exception {
   constructor () {
-    super('New email is the same as the current one.')
+    super(
+      'New email is the same as the current one.',
+      201,
+      'El nuevo correo electrónico es igual al actual.'
+    )
   }
 }
 
-export class InvalidEmailFieldException extends Error {
+export class InvalidEmailFieldException extends Exception {
   constructor () {
-    super('Invalid email')
+    super(
+      'Invalid email',
+      202,
+      'Correo electrónico inválido.'
+    )
   }
 }
 
-export class EmailRequiredFieldException extends Error {
+export class EmailRequiredFieldException extends Exception {
   constructor () {
-    super('Email is required')
+    super(
+      'Email is required',
+      203,
+      'El correo electrónico es requerido.'
+    )
   }
 }
 
-export class NewEmailAlreadyInUseFieldException extends Error {
+export class NewEmailAlreadyInUseFieldException extends Exception {
   constructor () {
-    super('New email already in use.')
+    super(
+      'New email already in use.',
+      204,
+      'El nuevo correo electrónico ya está en uso.'
+    )
   }
 }
 

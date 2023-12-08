@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
-import {
-  userDeleteByIdController,
-  userGetByEmailController,
-  userUpdateController
-} from 'infraestructure/server/express/controllers/user'
-import { getByIdController } from 'infraestructure/server/express/controllers/shared'
+import { UserController } from 'controllers'
+import { UserMongoDBRepositoryImplementation } from 'infraestructure/database/mongodb/implementations/repositories'
+import { UserMongoDBAdapter } from 'adapters/mongodb'
 import { Router } from 'express'
+
+const controller = new UserController(
+  UserMongoDBRepositoryImplementation,
+  UserMongoDBAdapter
+)
 
 const router = Router()
 
-router.get('/id/:id', getByIdController)
-router.get('/email/:email', userGetByEmailController)
-router.patch('/', userUpdateController)
-router.delete('/', userDeleteByIdController)
+// AGREGAR MIDDLEWARES COMO PRIMERA ACCION PARA LA VERIFICACION DE TOKENS
+router.patch('/', controller.update) // ACTUALIZAR SESION CON MIDDLEWARE COMO ULTIMA ACCION DEVOLVIENDO NUEVOS TOKENS QUE CONTENDRAN ENTONCES LOS DATOS DEL USUARIO ACTUALIZADO
 
 export default router
