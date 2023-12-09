@@ -31,7 +31,7 @@ export default class AuthController extends Controller {
     req: any,
     res: any
   ): Promise<void> {
-    await this.resolve(
+    await super.resolve(
       this.adapter.signIn,
       req.body,
       res
@@ -42,7 +42,7 @@ export default class AuthController extends Controller {
     req: any,
     res: any
   ): Promise<void> {
-    await this.resolve(
+    await super.resolve(
       this.adapter.signUp,
       req.body,
       res

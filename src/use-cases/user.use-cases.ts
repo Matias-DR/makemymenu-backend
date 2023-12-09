@@ -95,7 +95,6 @@ export default class UserUseCases {
       }
     }
 
-    console.log('estas son las contraseñas', input.password, userById.password)
     // Si la contraseña es incorrecta, levanto error
     if (!await compare(input.password, userById.password)) {
       throw new WrongPasswordFieldException()

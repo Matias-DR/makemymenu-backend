@@ -4,9 +4,14 @@ import {
   AuthMongoDBRepositoryImplementation,
   UserMongoDBRepositoryImplementation
 } from 'infraestructure/database/mongodb/implementations/repositories'
-import { Router } from 'express'
+import {
+  type Request,
+  type Response,
+  Router
+} from 'express'
 import { AuthController } from 'controllers'
 import { AuthMongoDBAdapter } from 'adapters/mongodb'
+import { sessionVerifyForAuthPagesMiddleware } from 'infraestructure/server/express/middlewares'
 
 const controller = new AuthController(
   AuthMongoDBRepositoryImplementation,
@@ -15,7 +20,19 @@ const controller = new AuthController(
 )
 
 const router = Router()
-router.post('/sign-up', controller.signUp)
-router.post('/sign-in', controller.signIn)
+router.post(
+  '/sign-up',
+  sessionVerifyForAuthPagesMiddleware,
+  async (req: Request, res: Response) => {
+    await controller.signUp(req, res)
+  }
+)
+router.post(
+  '/sign-in',
+  sessionVerifyForAuthPagesMiddleware,
+  async (req: Request, res: Response) => {
+    await controller.signIn(req, res)
+  }
+)
 
 export default router

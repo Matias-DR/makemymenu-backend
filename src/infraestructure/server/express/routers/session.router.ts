@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { SessionMongoDBRepositoryImplementation } from 'infraestructure/database/mongodb/implementations/repositories'
-import { Router } from 'express'
+import {
+  type Request,
+  type Response,
+  Router
+} from 'express'
 import { SessionController } from 'controllers'
 import { SessionMongoDBAdapter } from 'adapters/mongodb'
 
@@ -11,7 +15,17 @@ const controller = new SessionController(
 )
 
 const router = Router()
-router.put('/', controller.updateTokens)
-router.patch('/', controller.updateAccessToken)
+router.put(
+  '/',
+  async (req: Request, res: Response) => {
+    await controller.updateTokens(res, res)
+  }
+)
+router.patch(
+  '/',
+  async (req: Request, res: Response) => {
+    await controller.updateAccessToken(res, res)
+  }
+)
 
 export default router

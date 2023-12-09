@@ -7,7 +7,7 @@ import type {
   NextFunction
 } from 'express'
 
-export default async function authVerifyTokensMiddleware (
+export default async function sessionVerifyMiddleware (
   req: Request,
   res: Response,
   next: NextFunction
