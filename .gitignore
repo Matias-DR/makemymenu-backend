@@ -1,6 +1,4 @@
 node_modules
 
 .env
-notas.txt
-diagrama.txt
-definición-de-códigos-de-excepciones.txt
+todo.md
