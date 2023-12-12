@@ -1,55 +1,70 @@
+import { Exception } from '0.domain/exceptions/exception'
+import { ExpiredTokenException } from '0.domain/exceptions/session.exceptions'
+import { AccessField } from '0.domain/fields/session'
 import type { SessionRepository } from '0.domain/repositories'
-import type { SessionAdapter } from '5.adapters'
-import {
-  parseToken,
-  verifyToken,
-  createAccessToken,
-  createRefreshToken
-} from '1.lib/token.lib'
+import { SessionUseCases } from '3.use-cases'
 
 export default class SessionController {
   private readonly repository: SessionRepository
-  private readonly adapter: SessionAdapter
+  private readonly useCases: SessionUseCases
 
-  constructor (
-    Repository: new () => SessionRepository,
-    Adapter: new (repository: SessionRepository) => SessionAdapter
-  ) {
+  constructor (Repository: new () => SessionRepository) {
     this.repository = new Repository()
-    this.adapter = new Adapter(
-      this.repository
-    )
+    this.useCases = new SessionUseCases(this.repository)
   }
 
-  async updateSession (
+  async create (
     req: any,
     res: any
   ): Promise<void> {
-    const token = parseToken(req)
-    const user = {
+    const data = {
       id: req.body.id,
       email: req.body.email
     }
     try {
-      const result = await this.adapter.updateSession(
-        token,
-        user
-      )
-      res.status(200).json(result)
+      const result = await this.useCases.create(data)
+      const output = {
+        access: result.access,
+        refresh: result.refresh
+      }
+      res.status(200).json(output)
     } catch (error: any) {
       res.status(error.code).json(error.spanishMessage)
     }
   }
 
-  async updateTokens (
+  async delete (
     req: any,
     res: any
   ): Promise<void> {
-    const token = parseToken(req)
+    const token = AccessField.getTokenFromHeader(req.authorization)
+    const access = AccessField.constructFromToken(token)
     try {
-      verifyToken(token)
-      const result = await this.adapter.updateTokens(token)
-      res.status(200).json(result)
+      await this.useCases.delete(access)
+      res.status(200).json()
+    } catch (error: any) {
+      res.status(error.code).json(error.spanishMessage)
+    }
+  }
+
+  async updateTokensFromData (
+    req: any,
+    res: any
+  ): Promise<void> {
+    const token = AccessField.getTokenFromHeader(req.authorization)
+    const access = AccessField.constructFromToken(token)
+    const data = {
+      id: req.body.id,
+      email: req.body.email
+    }
+    try {
+      await this.useCases.delete(access)
+      const result = await this.useCases.create(data)
+      const output = {
+        access: result.access,
+        refresh: result.refresh
+      }
+      res.status(200).json(output)
     } catch (error: any) {
       res.status(error.code).json(error.spanishMessage)
     }
@@ -59,13 +74,24 @@ export default class SessionController {
     req: any,
     res: any
   ): Promise<void> {
-    const token = parseToken(req)
+    const token = AccessField.getTokenFromHeader(req.authorization)
+    const access = AccessField.constructFromToken(token)
     try {
-      verifyToken(token)
-      const result = await this.adapter.updateAccessToken(req.body)
-      res.status(200).json(result)
+      access.test()
     } catch (error: any) {
-      res.status(error.code).json(error.spanishMessage)
+      if (error instanceof ExpiredTokenException) {
+        try {
+          const result = await this.useCases.updateAccessToken(token)
+          res.status(200).json(result)
+          return
+        } catch (error: any) {
+          if (error instanceof Exception) {
+            res.status(error.code).json(error.spanishMessage)
+            return
+          }
+        }
+      }
+      res.status(500).json()
     }
   }
 }

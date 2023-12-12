@@ -39,3 +39,13 @@ export class UnhauthorizedException extends Exception {
     )
   }
 }
+
+export class SessionNotExistException extends Exception {
+  constructor () {
+    super(
+      'The session does not exist.',
+      401,
+      'No existe la sesión.'
+    )
+  }
+}

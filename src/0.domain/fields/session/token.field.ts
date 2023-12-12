@@ -18,7 +18,7 @@ export default class TokenField extends Field {
     if (authorizationHeader === undefined || authorizationHeader === null) {
       throw new NoTokenGivenException()
     }
-    const token = header.split(' ')[1]
+    const token = authorizationHeader.split(' ')[1]
     if (token === undefined || token === null || token === '') {
       throw new NoTokenGivenException()
     }
@@ -29,10 +29,20 @@ export default class TokenField extends Field {
     this: new (data: any) => T,
     token: string
   ): T {
-    const decoded = verify(
-      token,
-      JWT_SECRET
-    )
+    let decoded = ''
+    try {
+      decoded = verify(
+        token,
+        JWT_SECRET
+      ) as string
+    } catch (error: any) {
+      if (error instanceof TokenExpiredError) {
+        throw new ExpiredTokenException()
+      }
+      if (error instanceof JsonWebTokenError) {
+        throw new UnhauthorizedException()
+      }
+    }
     return new this(decoded)
   }
 
@@ -65,7 +75,7 @@ export default class TokenField extends Field {
     )
   }
 
-  decode (token?: string): string {
+  decode (token?: string): any {
     const decoded = verify(
       token ?? this.value,
       JWT_SECRET

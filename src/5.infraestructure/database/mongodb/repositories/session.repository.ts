@@ -1,17 +1,32 @@
+import type { SessionEntity } from '0.domain/entities'
 import {
   NotFoundOperationException,
   UnsuccessfulOperationException
 } from '0.domain/exceptions/operation.exceptions'
 import type { SessionRepository } from '0.domain/repositories'
-import { SessionModelImplementation } from '6.infraestructure/database/mongodb/implementations/models'
+import { SessionModelImplementation } from '5.infraestructure/database/mongodb/models'
 
 export default class SessionMongoDBRepositoryImplementation implements SessionRepository {
-  async createSession (tokens: {
+  async delete (accessToken: string): Promise<void> {
+    try {
+      await SessionModelImplementation.deleteOne({ accessToken })
+    } catch (error) {
+      throw new UnsuccessfulOperationException()
+    }
+  }
+
+  async create (tokens: {
     refreshToken: string
     accessToken: string
-  }): Promise<void> {
+  }): Promise<SessionEntity> {
     try {
-      await SessionModelImplementation.create(tokens)
+      const result = await SessionModelImplementation.create(tokens)
+      const resultToJson = result.toJSON()
+      return {
+        id: resultToJson._id.toString(),
+        refresh: resultToJson.refreshToken,
+        access: resultToJson.accessToken
+      }
     } catch (error) {
       throw new UnsuccessfulOperationException()
     }
@@ -56,12 +71,12 @@ export default class SessionMongoDBRepositoryImplementation implements SessionRe
   }
 
   async updateAccessToken (
-    refreshToken: string,
+    accessToken: string,
     newAccessToken: string
   ): Promise<void> {
     try {
       await SessionModelImplementation.updateOne(
-        { refreshToken },
+        { accessToken },
         { accessToken: newAccessToken }
       )
     } catch (error) {

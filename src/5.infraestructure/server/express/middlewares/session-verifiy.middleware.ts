@@ -1,7 +1,7 @@
 import { AccessField } from '0.domain/fields/session'
 import { Exception } from '0.domain/exceptions/exception'
-import { SessionUseCases } from '3.use-cases'
-import { SessionMongoDBRepositoryImplementation } from '6.infraestructure/database/mongodb/implementations/repositories'
+import { SessionServices } from '2.services'
+import { SessionMongoDBRepositoryImplementation } from '5.infraestructure/database/mongodb/repositories'
 import type {
   Request,
   Response,
@@ -19,8 +19,9 @@ export default async function sessionVerifyMiddleware (
     accessToken.test()
 
     const repository = new SessionMongoDBRepositoryImplementation()
-    const useCase = new SessionUseCases(repository)
-    await useCase.existByAccessToken(accessToken)
+    const services = new SessionServices(repository)
+
+    await services.existByAccessToken(accessToken)
   } catch (error: any) {
     if (error instanceof Exception) {
       res.status(error.code).json({ message: error.spanishMessage })

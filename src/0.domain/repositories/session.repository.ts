@@ -1,8 +1,11 @@
+import type { SessionEntity } from '0.domain/entities'
+
 export default interface SessionRepository {
-  createSession: (tokens: {
+  delete: (accessToken: string) => Promise<void>
+  create: (tokens: {
     refreshToken: string
     accessToken: string
-  }) => Promise<void>
+  }) => Promise<SessionEntity>
   getByRefreshToken: (refreshToken: string) => Promise<any>
   getByAccessToken: (accessToken: string) => Promise<any>
   updateTokens: (
@@ -13,7 +16,7 @@ export default interface SessionRepository {
     }
   ) => Promise<void>
   updateAccessToken: (
-    refreshToken: string,
+    accessToken: string,
     newAccessToken: string
   ) => Promise<void>
 }

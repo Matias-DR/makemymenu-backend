@@ -2,7 +2,7 @@ import { type UserEntity } from '0.domain/entities'
 import {
   EmailField,
   PasswordField
-} from '0.domain/fields'
+} from '0.domain/fields/user'
 import {
   NewEmailAlreadyInUseFieldException,
   InvalidEmailFieldException
@@ -11,13 +11,14 @@ import {
   TheNewPasswordIsTheSameAsTheCurrentFieldException,
   WrongPasswordFieldException
 } from '0.domain/exceptions/fields/password.field.exceptions'
-import { NothingToUpdateOperationException } from '0.domain/exceptions/operation.exceptions'
+import { AlreadyExistOperationException, NothingToUpdateOperationException } from '0.domain/exceptions/operation.exceptions'
 import { UserModel } from '0.domain/models'
 import type { UserRepository } from '0.domain/repositories'
 import {
   UserServices,
   SharedServices
 } from '2.services'
+
 import {
   compare,
   hash
@@ -30,6 +31,51 @@ export default class UserUseCases {
   constructor (private readonly userRepository: UserRepository) {
     this.userServices = new UserServices(this.userRepository)
     this.sharedServices = new SharedServices(this.userRepository)
+  }
+
+  async signIn (input: {
+    email: string
+    password: string
+  }): Promise<UserEntity> {
+    const email = new EmailField(input.email)
+    let password = null
+    try {
+      password = new PasswordField(input.password)
+    } catch {
+      throw new WrongPasswordFieldException()
+    }
+
+    const user = await this.userServices.getByEmail(email.value)
+
+    if (!await compare(password.value, user.password)) {
+      throw new WrongPasswordFieldException()
+    }
+
+    return user
+  }
+
+  async create (input: {
+    email: string
+    password: string
+    passwordConfirmation: string
+  }): Promise<UserEntity> {
+    const email = new EmailField(input.email)
+    const password = new PasswordField(input.password)
+
+    password.passwordConfirmMatchTest(input.passwordConfirmation)
+
+    if (await this.userServices.existByEmail(email.value)) {
+      throw new AlreadyExistOperationException()
+    }
+
+    const hashedPassword = await hash(password.value, 10)
+
+    const form = {
+      email: email.value,
+      password: hashedPassword
+    }
+
+    return await this.userRepository.create(form)
   }
 
   async deleteById (input: {

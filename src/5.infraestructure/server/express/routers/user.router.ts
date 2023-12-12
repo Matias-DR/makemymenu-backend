@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { SessionController, UserController } from '4.controllers'
-import { SessionMongoDBRepositoryImplementation, UserMongoDBRepositoryImplementation } from '6.infraestructure/database/mongodb/implementations/repositories'
-import { SessionMongoDBAdapter, UserMongoDBAdapter } from '5.adapters/mongodb'
+import { SessionMongoDBRepositoryImplementation, UserMongoDBRepositoryImplementation } from '5.infraestructure/database/mongodb/repositories'
 import {
   type Request,
   type Response,
@@ -12,7 +11,7 @@ import {
 import {
   sessionVerifyForAuthMiddleware,
   sessionVerifyMiddleware
-} from '6.infraestructure/server/express/middlewares'
+} from '5.infraestructure/server/express/middlewares'
 
 const userController = new UserController(
   UserMongoDBRepositoryImplementation
@@ -27,10 +26,9 @@ router.post(
   '/',
   sessionVerifyForAuthMiddleware,
   async (req: Request, res: Response) => {
-    await controller.signUp(req, res)
+    await userController.create(req, res)
   }
 )
-
 router.patch(
   '/',
   sessionVerifyMiddleware,
@@ -38,7 +36,17 @@ router.patch(
     await userController.update(req, res, next)
   },
   async (req: Request, res: Response) => {
-    await sessionController.updateSession(req, res)
+    await sessionController.updateTokensFromData(req, res)
+  }
+)
+router.delete(
+  '/',
+  sessionVerifyMiddleware,
+  async (req: Request, res: Response, next: NextFunction) => {
+    await userController.delete(req, res, next)
+  },
+  async (req: Request, res: Response) => {
+    await sessionController.delete(req, res)
   }
 )
 

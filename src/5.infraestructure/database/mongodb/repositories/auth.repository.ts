@@ -3,7 +3,7 @@ import {
   UnsuccessfulOperationException
 } from '0.domain/exceptions/operation.exceptions'
 import { type AuthRepository } from '0.domain/repositories'
-import { UserModelImplementation } from '6.infraestructure/database/mongodb/implementations/models'
+import { UserModelImplementation } from '5.infraestructure/database/mongodb/models'
 
 export default class AuthMongoDBRepositoryImplementation implements AuthRepository {
   private async operate (operation: () => Promise<void>): Promise<void> {
@@ -29,9 +29,21 @@ export default class AuthMongoDBRepositoryImplementation implements AuthReposito
     email: string
     password: string
   }): Promise<void> {
-    const operation = async (): Promise<void> => {
+    try {
       await UserModelImplementation.create(input)
+    } catch (error: any) {
+      if (Boolean(error.code) && error.code === 11000) {
+        throw new AlreadyExistOperationException()
+      } else {
+        if (error.errors !== undefined && error.errors !== null) {
+          const errors = Object.keys(error.errors)
+            .map(key => error.errors[key].properties.message)
+            .join('\n')
+          throw new Error(errors)
+        } else {
+          throw new UnsuccessfulOperationException()
+        }
+      }
     }
-    await this.operate(operation)
   }
 }

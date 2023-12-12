@@ -1,75 +1,50 @@
-import type { AccessField } from '0.domain/fields/session'
-import type { SessionRepository } from '0.domain/repositories'
+import type { SessionEntity } from '0.domain/entities'
 import {
-  createAccessToken,
-  createRefreshToken,
-  decodeToken
-} from '1.lib/token.lib'
+  AccessField,
+  RefreshField
+} from '0.domain/fields/session'
+import type { SessionRepository } from '0.domain/repositories'
+import { SessionServices } from '2.services'
 
 export default class SessionUseCases {
-  constructor (private readonly repository: SessionRepository) { }
+  private readonly services: SessionServices
 
-  async createSession (tokens: {
-    refreshToken: string
-    accessToken: string
-  }): Promise<void> {
-    await this.repository.createSession(tokens)
+  constructor (private readonly repository: SessionRepository) {
+    this.services = new SessionServices(this.repository)
   }
 
-  async existByAccessToken (accessToken: AccessField): Promise<boolean> {
-    const session = await this.repository.getByAccessToken(accessToken.value)
-    return session !== null || session !== undefined
+  async delete (access: AccessField): Promise<void> {
+    await this.services.existByAccessToken(access)
+    await this.repository.delete(access.value)
   }
 
-  async updateTokens (refreshToken: string): Promise<{
-    accessToken: string
-    refreshToken: string
-  }> {
-    const newTokens = {
-      refreshToken: '',
-      accessToken: ''
+  async create (input: {
+    id: string
+    email: string
+  }): Promise<SessionEntity> {
+    const refreshToken = new RefreshField(input)
+    const accessToken = new AccessField(input)
+    const tokens = {
+      refreshToken: refreshToken.value,
+      accessToken: accessToken.value
     }
-
-    const session = await this.repository.getByRefreshToken(refreshToken)
-
-    if (session !== null && session !== undefined) {
-      const decodedData = decodeToken(refreshToken)
-      const data = {
-        id: decodedData.id,
-        email: decodedData.email
-      }
-
-      newTokens.refreshToken = createRefreshToken(data)
-      newTokens.accessToken = createAccessToken(data)
-
-      await this.repository.updateTokens(
-        refreshToken,
-        newTokens
-      )
-    }
-
-    return newTokens
+    await this.services.existByRefreshToken(refreshToken)
+    return await this.repository.create(tokens)
   }
 
-  async updateAccessToken (refreshToken: string): Promise<string> {
-    let newAccessToken = ''
-    const session = await this.repository.getByRefreshToken(refreshToken)
-
-    if (session !== null && session !== undefined) {
-      const decodedData = decodeToken(refreshToken)
-      const data = {
-        id: decodedData.id,
-        email: decodedData.email
-      }
-
-      newAccessToken = createAccessToken(data)
-
-      await this.repository.updateAccessToken(
-        refreshToken,
-        newAccessToken
-      )
+  async updateAccessToken (token: string): Promise<string> {
+    const access = AccessField.constructFromToken(token)
+    await this.services.existByAccessToken(access)
+    const decoded = access.decode()
+    const data = {
+      id: decoded.id,
+      email: decoded.email
     }
-
-    return newAccessToken
+    const newAccessToken = new AccessField(data)
+    await this.repository.updateAccessToken(
+      token,
+      newAccessToken.value
+    )
+    return newAccessToken.value
   }
 }

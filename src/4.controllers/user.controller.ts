@@ -1,17 +1,61 @@
+import { Exception } from '0.domain/exceptions/exception'
+import { AccessField } from '0.domain/fields/session'
 import type { UserRepository } from '0.domain/repositories'
-import type { UserAdapter } from '5.adapters'
-import { decodeToken, parseToken } from '1.lib/token.lib'
+import { UserServices } from '2.services'
+import { UserUseCases } from '3.use-cases'
 
 export default class UserController {
-  private readonly adapter: UserAdapter
   private readonly repository: UserRepository
+  private readonly services: UserServices
+  private readonly useCases: UserUseCases
 
-  constructor (
-    Repository: new () => UserRepository,
-    Adapter: new (repository: UserRepository) => UserAdapter
-  ) {
+  constructor (Repository: new () => UserRepository) {
     this.repository = new Repository()
-    this.adapter = new Adapter(this.repository)
+    this.useCases = new UserUseCases(this.repository)
+    this.services = new UserServices(this.repository)
+  }
+
+  async signIn (
+    req: any,
+    res: any,
+    next: () => void
+  ): Promise<void> {
+    const input = {
+      email: req.body.email,
+      password: req.body.password
+    }
+    try {
+      const result = await this.useCases.signIn(input)
+      req.body = result
+      next()
+    } catch (error: any) {
+      if (error instanceof Exception) {
+        res.status(error.code).json(error.spanishMessage)
+      } else {
+        res.status(500).json()
+      }
+    }
+  }
+
+  async create (
+    req: any,
+    res: any
+  ): Promise<void> {
+    const input = {
+      email: req.body.email,
+      password: req.body.password,
+      passwordConfirmation: req.body.passwordConfirmation
+    }
+    try {
+      await this.useCases.create(input)
+      res.status(200).json()
+    } catch (error: any) {
+      if (error instanceof Exception) {
+        res.status(error.code).json(error.spanishMessage)
+      } else {
+        res.status(500).json()
+      }
+    }
   }
 
   async update (
@@ -19,44 +63,53 @@ export default class UserController {
     res: any,
     next: () => void
   ): Promise<void> {
-    const token = parseToken(req)
-    const decodedToken = decodeToken(token)
-    const input = {
-      id: decodedToken.id,
-      email: decodedToken.email,
-      ...req.body
-    }
+    const token = AccessField.getTokenFromHeader(req.headers)
+    let access: AccessField
     try {
-      const result = await this.adapter.update(input)
-      req.body = result
+      access = AccessField.constructFromToken(token)
+      const decoded = access.decode()
+      const input = {
+        id: decoded.id,
+        email: decoded.email,
+        ...req.body
+      }
+      try {
+        const result = await this.useCases.update(input)
+        req.body = result
+        next()
+      } catch (error: any) {
+        if (error instanceof Exception) {
+          res.status(error.code).json(error.spanishMessage)
+        } else {
+          res.status(500).json()
+        }
+      }
+    } catch (error: any) {
+      if (error instanceof Exception) {
+        res.status(error.code).json(error.spanishMessage)
+      } else {
+        res.status(500).json()
+      }
+    }
+  }
+
+  async delete (
+    req: any,
+    res: any,
+    next: () => void
+  ): Promise<void> {
+    const token = AccessField.getTokenFromHeader(req.headers)
+    const access = AccessField.constructFromToken(token)
+    const { id } = access.decode()
+    try {
+      await this.useCases.deleteById(id)
       next()
-      // res.status(200).json(result)
     } catch (error: any) {
-      res.status(error.code).json(error.spanishMessage)
-    }
-  }
-
-  async getByEmail (
-    req: any,
-    res: any
-  ): Promise<void> {
-    try {
-      const result = await this.adapter.getByEmail(req.params)
-      res.status(200).json(result)
-    } catch (error: any) {
-      res.status(error.code).json(error.spanishMessage)
-    }
-  }
-
-  async deleteById (
-    req: any,
-    res: any
-  ): Promise<void> {
-    try {
-      await this.adapter.deleteById(req.params)
-      res.status(200)
-    } catch (error: any) {
-      res.status(error.code).json(error.spanishMessage)
+      if (error instanceof Exception) {
+        res.status(error.code).json(error.spanishMessage)
+      } else {
+        res.status(500).json()
+      }
     }
   }
 }

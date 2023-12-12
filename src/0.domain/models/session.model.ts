@@ -10,6 +10,7 @@ export default class SessionModel {
 
   entity (): SessionEntity {
     return {
+      id: this.id,
       refresh: this.refresh.value,
       access: this.access.value
     }
