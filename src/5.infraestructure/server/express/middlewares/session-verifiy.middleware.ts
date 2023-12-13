@@ -23,7 +23,7 @@ export default async function sessionVerifyMiddleware (
     await services.existByAccessToken(accessToken)
   } catch (error: any) {
     if (error instanceof Exception) {
-      res.status(error.code).json({ message: error.spanishMessage })
+      res.status(error.code).json(error.spanishMessage)
     } else {
       res.status(500).json()
     }

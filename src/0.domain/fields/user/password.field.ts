@@ -1,6 +1,7 @@
 import { Field } from '..'
 import {
   InvalidPasswordFieldException,
+  PasswordRequiredFieldException,
   WrongPasswordConfirmationFieldException
 } from '0.domain/exceptions/fields/password.field.exceptions'
 
@@ -11,7 +12,13 @@ export default class PasswordField extends Field {
   }
 
   public test (password?: string): void {
-    if (!/^(?=.*[!-~])(?=.{8,64})/.test(password ?? this.value)) {
+    if (
+      (password === undefined || password === null) &&
+      (this.value === undefined || this.value === null)
+    ) {
+      throw new PasswordRequiredFieldException()
+    }
+    if (!(/^(?=.*[!-~])(?=.{8,64})/.test(password ?? this.value))) {
       throw new InvalidPasswordFieldException()
     }
   }

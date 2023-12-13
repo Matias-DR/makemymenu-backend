@@ -47,7 +47,7 @@ router.post(
 )
 router.delete(
   '/',
-  sessionVerifyForAuthMiddleware,
+  sessionVerifyMiddleware,
   async (req: Request, res: Response) => {
     try {
       await sessionController.delete(req)

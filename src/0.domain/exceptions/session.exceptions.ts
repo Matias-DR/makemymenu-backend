@@ -35,7 +35,7 @@ export class UnhauthorizedException extends Exception {
     super(
       'Unauthorized.',
       401,
-      'Sin autorización.'
+      'Acceso denegado.'
     )
   }
 }

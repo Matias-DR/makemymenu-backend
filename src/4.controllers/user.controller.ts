@@ -43,7 +43,11 @@ export default class UserController {
 
   async delete (req: any): Promise<void> {
     const access = extractTokenFromHeaders(req.headers)
-    const { id } = decodeToken(access)
-    await this.useCases.deleteById(id)
+    const decoded = decodeToken(access)
+    const input = {
+      id: decoded.id,
+      password: req.body.password
+    }
+    await this.useCases.deleteById(input)
   }
 }

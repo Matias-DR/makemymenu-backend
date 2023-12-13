@@ -28,6 +28,7 @@ router.post(
   async (req: Request, res: Response) => {
     try {
       await userController.create(req)
+      res.status(201).json()
     } catch (error: any) {
       if (error instanceof Exception) {
         res.status(error.code).json(error.spanishMessage)
@@ -43,7 +44,8 @@ router.patch(
   async (req: Request, res: Response) => {
     try {
       await userController.update(req)
-      await sessionController.updateFromData(req)
+      const result = await sessionController.updateFromData(req)
+      res.status(200).json(result)
     } catch (error: any) {
       if (error instanceof Exception) {
         res.status(error.code).json(error.spanishMessage)
@@ -60,6 +62,7 @@ router.delete(
     try {
       await userController.delete(req)
       await sessionController.delete(req)
+      res.status(200).json()
     } catch (error: any) {
       if (error instanceof Exception) {
         res.status(error.code).json(error.spanishMessage)
