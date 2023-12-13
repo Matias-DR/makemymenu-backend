@@ -113,4 +113,4 @@ headers.authorization: 'Bearer <access-token>'
 #
 
 > [!NOTE]
-> _Este proyecto está basado y estructurado según la arquitectura [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)_
+> _Este proyecto está basado y estructurado bajo la arquitectura [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)_
