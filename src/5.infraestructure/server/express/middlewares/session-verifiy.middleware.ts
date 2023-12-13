@@ -1,5 +1,5 @@
-import { AccessField } from '0.domain/fields/session'
 import { Exception } from '0.domain/exceptions/exception'
+import { extractTokenFromHeaders, verifyToken } from '1.utils/token.util'
 import { SessionServices } from '2.services'
 import { SessionMongoDBRepositoryImplementation } from '5.infraestructure/database/mongodb/repositories'
 import type {
@@ -14,9 +14,8 @@ export default async function sessionVerifyMiddleware (
   next: NextFunction
 ): Promise<void> {
   try {
-    const tokenFromHeader = AccessField.getTokenFromHeader(req.header)
-    const accessToken = AccessField.constructFromToken(tokenFromHeader)
-    accessToken.test()
+    const accessToken = extractTokenFromHeaders(req.headers)
+    verifyToken(accessToken)
 
     const repository = new SessionMongoDBRepositoryImplementation()
     const services = new SessionServices(repository)
@@ -28,6 +27,7 @@ export default async function sessionVerifyMiddleware (
     } else {
       res.status(500).json()
     }
+    return
   }
   next()
 }

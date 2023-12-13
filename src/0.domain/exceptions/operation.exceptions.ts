@@ -14,7 +14,7 @@ export class UnsuccessfulOperationException extends Exception {
   constructor () {
     super(
       'An error has occurred. Unsuccessful operation',
-      1,
+      500,
       'Ha ocurrido un error. Operación fallida.'
     )
   }
@@ -34,7 +34,7 @@ export class NothingToUpdateOperationException extends Exception {
   constructor () {
     super(
       'Nothing to updated.',
-      3,
+      400,
       'Nada que actualizar.'
     )
   }
@@ -44,7 +44,7 @@ export class ImpossibleToPerformOperationException extends Exception {
   constructor () {
     super(
       'Impossible to perform the operation.',
-      4,
+      400,
       'Imposible realizar la operación.'
     )
   }

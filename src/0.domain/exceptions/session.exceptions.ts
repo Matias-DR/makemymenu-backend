@@ -15,7 +15,7 @@ export class NoTokenGivenException extends Exception {
     super(
       'No token given.',
       401,
-      'No se ha proporcionado token.'
+      'No se ah proporcionado token.'
     )
   }
 }

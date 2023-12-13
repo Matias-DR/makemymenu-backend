@@ -21,32 +21,57 @@ export default class SessionMongoDBRepositoryImplementation implements SessionRe
   }): Promise<SessionEntity> {
     try {
       const result = await SessionModelImplementation.create(tokens)
-      const resultToJson = result.toJSON()
-      return {
-        id: resultToJson._id.toString(),
-        refresh: resultToJson.refreshToken,
-        access: resultToJson.accessToken
+      const json = result.toJSON()
+      const session = {
+        id: json._id.toString(),
+        refresh: json.refreshToken,
+        access: json.accessToken
       }
+      return session
     } catch (error) {
       throw new UnsuccessfulOperationException()
     }
   }
 
-  async getByRefreshToken (refreshToken: string): Promise<any> {
+  async getByRefreshToken (refreshToken: string): Promise<SessionEntity> {
     try {
       const result = await SessionModelImplementation.findOne({ refreshToken })
-      return result
+      if (result === undefined || result === null) {
+        throw new NotFoundOperationException()
+      }
+      const json = result.toJSON()
+      const session = {
+        id: json._id.toString(),
+        refresh: json.refreshToken,
+        access: json.accessToken
+      }
+      return session
     } catch (error) {
-      throw new NotFoundOperationException()
+      if (!(error instanceof NotFoundOperationException)) {
+        throw new UnsuccessfulOperationException()
+      }
+      throw error
     }
   }
 
-  async getByAccessToken (accessToken: string): Promise<any> {
+  async getByAccessToken (accessToken: string): Promise<SessionEntity> {
     try {
       const result = await SessionModelImplementation.findOne({ accessToken })
-      return result === undefined || result === null
+      if (result === undefined || result === null) {
+        throw new NotFoundOperationException()
+      }
+      const json = result.toJSON()
+      const session = {
+        id: json._id.toString(),
+        refresh: json.refreshToken,
+        access: json.accessToken
+      }
+      return session
     } catch (error) {
-      throw new NotFoundOperationException()
+      if (!(error instanceof NotFoundOperationException)) {
+        throw new UnsuccessfulOperationException()
+      }
+      throw error
     }
   }
 

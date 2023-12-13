@@ -6,7 +6,7 @@ import {
   REFRESH_TOKEN_EXPIRES_IN,
   MONGODB_URI,
   MONGODB_MAKEMYMENU_DB
-} from '1.lib/constants'
+} from '1.utils/constants.util'
 
 const sessionModelScheme = new Schema({
   refreshToken: {

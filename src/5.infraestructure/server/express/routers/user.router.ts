@@ -5,13 +5,13 @@ import { SessionMongoDBRepositoryImplementation, UserMongoDBRepositoryImplementa
 import {
   type Request,
   type Response,
-  type NextFunction,
   Router
 } from 'express'
 import {
   sessionVerifyForAuthMiddleware,
   sessionVerifyMiddleware
 } from '5.infraestructure/server/express/middlewares'
+import { Exception } from '0.domain/exceptions/exception'
 
 const userController = new UserController(
   UserMongoDBRepositoryImplementation
@@ -26,27 +26,47 @@ router.post(
   '/',
   sessionVerifyForAuthMiddleware,
   async (req: Request, res: Response) => {
-    await userController.create(req, res)
+    try {
+      await userController.create(req)
+    } catch (error: any) {
+      if (error instanceof Exception) {
+        res.status(error.code).json(error.spanishMessage)
+      } else {
+        res.status(500).json()
+      }
+    }
   }
 )
 router.patch(
   '/',
   sessionVerifyMiddleware,
-  async (req: Request, res: Response, next: NextFunction) => {
-    await userController.update(req, res, next)
-  },
   async (req: Request, res: Response) => {
-    await sessionController.updateTokensFromData(req, res)
+    try {
+      await userController.update(req)
+      await sessionController.updateFromData(req)
+    } catch (error: any) {
+      if (error instanceof Exception) {
+        res.status(error.code).json(error.spanishMessage)
+      } else {
+        res.status(500).json()
+      }
+    }
   }
 )
 router.delete(
   '/',
   sessionVerifyMiddleware,
-  async (req: Request, res: Response, next: NextFunction) => {
-    await userController.delete(req, res, next)
-  },
   async (req: Request, res: Response) => {
-    await sessionController.delete(req, res)
+    try {
+      await userController.delete(req)
+      await sessionController.delete(req)
+    } catch (error: any) {
+      if (error instanceof Exception) {
+        res.status(error.code).json(error.spanishMessage)
+      } else {
+        res.status(500).json()
+      }
+    }
   }
 )
 

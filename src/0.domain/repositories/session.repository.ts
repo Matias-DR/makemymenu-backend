@@ -6,8 +6,8 @@ export default interface SessionRepository {
     refreshToken: string
     accessToken: string
   }) => Promise<SessionEntity>
-  getByRefreshToken: (refreshToken: string) => Promise<any>
-  getByAccessToken: (accessToken: string) => Promise<any>
+  getByRefreshToken: (refreshToken: string) => Promise<SessionEntity>
+  getByAccessToken: (accessToken: string) => Promise<SessionEntity>
   updateTokens: (
     refreshToken: string,
     newTokens: {

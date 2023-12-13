@@ -14,7 +14,7 @@ export class NewPasswordConfirmationIsDifferentFromNewPasswordFieldException ext
   constructor () {
     super(
       'The new password confirmation must match the new password.',
-      211,
+      400,
       'La confirmación de la nueva contraseña debe coincidir con la nueva contraseña.'
     )
   }
@@ -24,7 +24,7 @@ export class PasswordRequiredFieldException extends Exception {
   constructor () {
     super(
       'Password is required',
-      212,
+      400,
       'La contraseña es requerida'
     )
   }
@@ -34,7 +34,7 @@ export class TheNewPasswordIsTheSameAsTheCurrentFieldException extends Exception
   constructor () {
     super(
       'To update the password, it must be different from the current one.',
-      213,
+      400,
       'Para actualizar la contraseña, esta debe ser diferente a la actual.'
     )
   }

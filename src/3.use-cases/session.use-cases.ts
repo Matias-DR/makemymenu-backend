@@ -1,9 +1,7 @@
 import type { SessionEntity } from '0.domain/entities'
-import {
-  AccessField,
-  RefreshField
-} from '0.domain/fields/session'
+import { NotFoundOperationException, UnsuccessfulOperationException } from '0.domain/exceptions/operation.exceptions'
 import type { SessionRepository } from '0.domain/repositories'
+import { createAccessToken, createRefreshToken, decodeToken } from '1.utils/token.util'
 import { SessionServices } from '2.services'
 
 export default class SessionUseCases {
@@ -13,38 +11,46 @@ export default class SessionUseCases {
     this.services = new SessionServices(this.repository)
   }
 
-  async delete (access: AccessField): Promise<void> {
+  async delete (access: string): Promise<void> {
     await this.services.existByAccessToken(access)
-    await this.repository.delete(access.value)
+    await this.repository.delete(access)
   }
 
   async create (input: {
     id: string
     email: string
   }): Promise<SessionEntity> {
-    const refreshToken = new RefreshField(input)
-    const accessToken = new AccessField(input)
+    const refreshToken = createRefreshToken(input)
+    const accessToken = createAccessToken(input)
     const tokens = {
-      refreshToken: refreshToken.value,
-      accessToken: accessToken.value
+      refreshToken,
+      accessToken
     }
-    await this.services.existByRefreshToken(refreshToken)
-    return await this.repository.create(tokens)
+    let exception = new UnsuccessfulOperationException()
+    try {
+      await this.services.existByRefreshToken(refreshToken)
+    } catch (error: any) {
+      if (error instanceof NotFoundOperationException) {
+        return await this.repository.create(tokens)
+      } else {
+        exception = error
+      }
+    }
+    throw exception
   }
 
-  async updateAccessToken (token: string): Promise<string> {
-    const access = AccessField.constructFromToken(token)
-    await this.services.existByAccessToken(access)
-    const decoded = access.decode()
+  async updateAccessToken (accessToken: string): Promise<string> {
+    await this.services.existByAccessToken(accessToken)
+    const decoded = decodeToken(accessToken)
     const data = {
       id: decoded.id,
       email: decoded.email
     }
-    const newAccessToken = new AccessField(data)
+    const newAccessToken = createAccessToken(data)
     await this.repository.updateAccessToken(
-      token,
-      newAccessToken.value
+      accessToken,
+      newAccessToken
     )
-    return newAccessToken.value
+    return newAccessToken
   }
 }

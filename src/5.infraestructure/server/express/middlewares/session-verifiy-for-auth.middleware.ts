@@ -1,4 +1,4 @@
-import { AccessField } from '0.domain/fields/session'
+import { extractTokenFromHeaders, verifyToken } from '1.utils/token.util'
 import type {
   Request,
   Response,
@@ -10,12 +10,10 @@ export default async function sessionVerifyForAuthMiddleware (
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  let token: string
-  let access: AccessField
+  let access: string
   try {
     // Tomo token del header
-    token = AccessField.getTokenFromHeader(req.headers)
-    access = AccessField.constructFromToken(token)
+    access = extractTokenFromHeaders(req.headers)
   } catch (error) {
     // Si no hay token (NoTokenGivenException) todo ok
     next()
@@ -23,7 +21,7 @@ export default async function sessionVerifyForAuthMiddleware (
   }
   try {
     // Si hay token, lo verifico
-    access.test()
+    verifyToken(access)
   } catch (error: any) {
     // Si el token es inválido devuelvo 'Unhauthorized'
     res.status(error.code).json({ message: error.spanishMessage })
