@@ -38,6 +38,7 @@ En la raíz del proyecto, cree un archivo con el nombre ".env"
 
   ```bash
   MONGODB_URI=<mongodb-cluster-connection-string> // Por ejemplo: mongodb+srv://<usuario>:<contraseña>@cluster.<codigo-de-cluster>.mongodb.net/<nombre-de-db-dentro-del-cluster>?retryWrites=true&w=majority
+  MONGODB_SELECTED_DB=<db-in-cluster-name>
   EXPRESS_SERVER_PORT=<custom-port>|3000
   EXPRESS_SERVER_HOST=<custom-server-host>|localhost
   JWT_SECRET=<secret-string>
@@ -59,59 +60,21 @@ En la raíz del proyecto, cree un archivo con el nombre ".env"
 
 ## APIs
 
-- POST /api/auth/sign-up
+### /api/user
+
+- POST
 ```
-body request:
-{
+request.body: {
   email:ex00@ex.com,
   password:123qwe78,
   passwordConfirmation:123qwe78
 }
 ```
 
-response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-
-- POST /api/auth/sign-in
+- PATCH
 ```
-body request:
-{
-  email:ex00@ex.com
-  password:123qwe78
-}
-```
-
-response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-
-- GET /api/user/id/&lt;id&gt;
-
-response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-
-- GET /api/user/email/&lt;email&gt;
-
-response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-
-- DELETE /api/user
-```
-body request:
-{
-  id:<id>
-  password:123qwe78
-}
-```
-
-response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
-
-- PATCH /api/user
-```
-body request:
-{
-  id:<id>
-  email:ex00@ex.com
+headers.authorization: 'Bearer <access-token>'
+request.body: {
   password:123qwe78
   newEmail:ex00@ex.com_
   newPassword:123qwe78_
@@ -119,8 +82,33 @@ body request:
 }
 ```
 
-response:
-[UserEntity](https://github.com/Matias-DR/makemymenu-backend/blob/main/src/domain/entities/user.entity.ts) | Error
+- DELETE
+```
+headers.authorization: 'Bearer <access-token>'
+request.body: {
+  password:123qwe78
+}
+```
+
+### /api/session
+
+- POST
+```
+request.body: {
+  email:ex00@ex.com
+  password:123qwe78
+}
+```
+
+- PATCH
+```
+headers.authorization: 'Bearer <access-token>'
+```
+
+- DELETE
+```
+headers.authorization: 'Bearer <access-token>'
+```
 
 #
 
