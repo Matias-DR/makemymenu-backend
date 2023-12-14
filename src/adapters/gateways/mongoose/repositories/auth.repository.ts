@@ -3,7 +3,7 @@ import {
   UnsuccessfulOperationException
 } from 'domain/exceptions/operation.exceptions'
 import { type AuthRepository } from 'domain/repositories'
-import { UserModelImplementation } from 'infraestructure/database/mongodb/models'
+import { UserModelImplementation } from 'adapters/database/mongodb/models'
 
 export default class AuthMongoDBRepositoryImplementation implements AuthRepository {
   private async operate (operation: () => Promise<void>): Promise<void> {

@@ -1,7 +1,7 @@
 import { Exception } from 'domain/exceptions/exception'
 import { extractTokenFromHeaders, verifyToken } from 'utils/token.util'
 import { SessionServices } from 'services'
-import { SessionMongoDBRepositoryImplementation } from 'infraestructure/database/mongodb/repositories'
+import { SessionMongoDBRepositoryImplementation } from 'adapters/database/mongodb/repositories'
 import type {
   Request,
   Response,

@@ -5,7 +5,7 @@ import {
   UnsuccessfulOperationException
 } from 'domain/exceptions/operation.exceptions'
 import { type UserRepository } from 'domain/repositories'
-import { UserModelImplementation } from 'infraestructure/database/mongodb/models'
+import { UserModelImplementation } from 'adapters/gateways/databases/mongodb/mongoose/models'
 
 import { Error } from 'mongoose'
 

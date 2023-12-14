@@ -5,7 +5,6 @@ import 'dotenv/config'
 
 const app: Application = express()
 
-// Config sv
 const corsOptions: CorsOptions = {
   origin: '*'
 }
@@ -18,7 +17,6 @@ app.use('/api', router)
 const EXPRESS_SERVER_PORT: number = parseInt(process.env.EXPRESS_SERVER_PORT ?? '3000')
 const EXPRESS_SERVER_HOST: string = process.env.EXPRESS_SERVER_HOST ?? 'localhost'
 
-// Start app
 app
   .listen(EXPRESS_SERVER_PORT, EXPRESS_SERVER_HOST, () => {
     console.log(`Server is running on port ${EXPRESS_SERVER_PORT}.`)
