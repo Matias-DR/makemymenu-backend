@@ -7,6 +7,8 @@ export default interface UserRepository extends Repository {
     email: string
     password: string
   }) => Promise<UserEntity>
+  getById: (id: string) => Promise<Nullable<any>>
   getByEmail: (email: string) => Promise<Nullable<UserEntity>>
   update: (form: UserEntity) => Promise<UserEntity>
+  deleteById: (id: string) => Promise<any>
 }

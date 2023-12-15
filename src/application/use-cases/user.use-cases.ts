@@ -12,12 +12,11 @@ import {
   WrongPasswordFieldException
 } from 'domain/exceptions/fields/password.field.exceptions'
 import { AlreadyExistOperationException, NothingToUpdateOperationException } from 'domain/exceptions/operation.exceptions'
-import { UserModel } from 'domain/models'
 import type { UserRepository } from 'domain/repositories'
 import {
   UserServices,
   SharedServices
-} from 'services'
+} from 'application/services'
 
 import {
   compare,
@@ -117,11 +116,11 @@ export default class UserUseCases {
       throw new NothingToUpdateOperationException()
     }
 
-    const user = new UserModel(
-      input.id,
-      new EmailField(input.newEmail ?? input.email),
-      new PasswordField(input.newPassword ?? input.password)
-    )
+    const user = {
+      id: input.id,
+      email: new EmailField(input.newEmail ?? input.email),
+      password: new PasswordField(input.newPassword ?? input.password)
+    }
 
     // Si hay nueva contraseña
     if (input.newPassword !== undefined && input.newPassword !== null) {

@@ -1,7 +1,7 @@
 import type { SessionEntity } from 'domain/entities'
 
 export default interface SessionRepository {
-  delete: (accessToken: string) => Promise<void>
+  deleteByAccessToken: (accessToken: string) => Promise<void>
   create: (tokens: {
     refreshToken: string
     accessToken: string

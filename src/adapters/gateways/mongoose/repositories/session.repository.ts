@@ -4,10 +4,10 @@ import {
   UnsuccessfulOperationException
 } from 'domain/exceptions/operation.exceptions'
 import type { SessionRepository } from 'domain/repositories'
-import { SessionModelImplementation } from 'adapters/database/mongodb/models'
+import { SessionModelImplementation } from 'adapters/gateways/mongoose/models'
 
 export default class SessionMongoDBRepositoryImplementation implements SessionRepository {
-  async delete (accessToken: string): Promise<void> {
+  async deleteByAccessToken (accessToken: string): Promise<void> {
     try {
       await SessionModelImplementation.deleteOne({ accessToken })
     } catch (error) {

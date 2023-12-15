@@ -23,10 +23,10 @@ export default async function sessionVerifyForAuthMiddleware (
     // Si hay token, lo verifico
     verifyToken(access)
   } catch (error: any) {
-    // Si el token es inválido devuelvo 'Unhauthorized'
+    // Si el token es inválido
     res.status(error.code).json(error.spanishMessage)
     return
   }
-  // Si el token es válido devuelvo 'sesión activa'
+  // Si el token es válido
   res.status(403).json('Acceso denegado')
 }

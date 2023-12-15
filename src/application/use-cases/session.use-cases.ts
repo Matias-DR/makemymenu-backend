@@ -2,7 +2,7 @@ import type { SessionEntity } from 'domain/entities'
 import { NotFoundOperationException, UnsuccessfulOperationException } from 'domain/exceptions/operation.exceptions'
 import type { SessionRepository } from 'domain/repositories'
 import { createAccessToken, createRefreshToken, decodeToken } from 'utils/token.util'
-import { SessionServices } from 'services'
+import { SessionServices } from 'application/services'
 
 export default class SessionUseCases {
   private readonly services: SessionServices
@@ -11,9 +11,9 @@ export default class SessionUseCases {
     this.services = new SessionServices(this.repository)
   }
 
-  async delete (access: string): Promise<void> {
-    await this.services.existByAccessToken(access)
-    await this.repository.delete(access)
+  async deleteByAccessToken (accessToken: string): Promise<void> {
+    await this.services.existByAccessToken(accessToken)
+    await this.repository.deleteByAccessToken(accessToken)
   }
 
   async create (input: {
