@@ -2,7 +2,7 @@
 
 ¡Bienvenido!
 
-Este proyecto permite a través de [APIs](https://es.wikipedia.org/wiki/API) (indicadas por debajo) administrar el ABM de usuarios.
+Este proyecto permite a través de [APIs](https://es.wikipedia.org/wiki/API) (indicadas por debajo) administrar un ABM de usuarios.
 
 ## Requisitos previos
 
