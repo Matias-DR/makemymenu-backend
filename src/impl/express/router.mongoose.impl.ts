@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
-import type {
-  UserControllerImpl,
-  SessionControllerImpl
-} from 'impl/express/controllers'
+import { mongoose as userCreateController } from './controllers/user/create.user.controller.impl'
+import { mongoose as userUpdateController } from './controllers/user/update.user.controller.impl'
+import { mongoose as userDeleteController } from './controllers/user/delete.user.controller.impl'
+import { mongoose as userAuthenticationController } from './controllers/user/authentication.user.controller.impl'
+import { mongoose as sessionCreateController } from './controllers/session/create.session.controller.impl'
+import { mongoose as sessionUpdateController } from './controllers/session/update.session.controller.impl'
+import { mongoose as sessionDeleteByRefreshTokenController } from './controllers/session/delete-by-refresh-token.session.controller.impl'
+import { mongoose as sessionDeleteByAccessTokenController } from './controllers/session/delete-by-access-token.session.controller.impl'
 import {
   verifySessionMdd,
   verifySessionForAuthMdd
@@ -11,24 +15,18 @@ import {
 
 import { Router } from 'express'
 
-export default class RouterImpl {
+export default class RouterMongooseImpl {
   private readonly _router: Router
   private readonly _userRouter: Router
   private readonly _sessionRouter: Router
   private readonly _authRouter: Router
 
-  constructor (
-    private readonly userController: UserControllerImpl,
-    private readonly sessionController: SessionControllerImpl
-  ) {
+  constructor () {
     this._router = Router()
     this._userRouter = Router()
     this._sessionRouter = Router()
     this._authRouter = Router()
     this.configure()
-    this.main.use('/user', this._userRouter)
-    this.main.use('/session', this._sessionRouter)
-    this.main.use('/auth', this._authRouter)
   }
 
   get main (): Router {
@@ -54,13 +52,16 @@ export default class RouterImpl {
     this.authentication()
     this.updateSession()
     this.deleteSession()
+    this.main.use('/user', this._userRouter)
+    this.main.use('/session', this._sessionRouter)
+    this.main.use('/auth', this._authRouter)
   }
 
   private createUser (): void {
     this.userRouter.post(
       '/',
       verifySessionForAuthMdd,
-      this.userController.create
+      userCreateController
     )
   }
 
@@ -68,8 +69,8 @@ export default class RouterImpl {
     this.userRouter.patch(
       '/',
       verifySessionMdd,
-      this.userController.update,
-      this.sessionController.update
+      userUpdateController,
+      sessionUpdateController
     )
   }
 
@@ -77,15 +78,17 @@ export default class RouterImpl {
     this.userRouter.delete(
       '/',
       verifySessionMdd,
-      this.userController.delete
+      userDeleteController,
+      sessionDeleteByAccessTokenController
     )
   }
 
   private authentication (): void {
-    this.authRouter.delete(
+    this.authRouter.post(
       '/',
       verifySessionMdd,
-      this.userController.delete
+      userAuthenticationController,
+      sessionCreateController
     )
   }
 
@@ -93,7 +96,7 @@ export default class RouterImpl {
     this.sessionRouter.patch(
       '/',
       verifySessionMdd,
-      this.sessionController.update
+      sessionUpdateController
     )
   }
 
@@ -101,12 +104,12 @@ export default class RouterImpl {
     this.sessionRouter.delete(
       '/refresh',
       verifySessionMdd,
-      this.sessionController.deleteByRefreshToken
+      sessionDeleteByRefreshTokenController
     )
     this.sessionRouter.delete(
       '/access',
       verifySessionMdd,
-      this.sessionController.deleteByRefreshToken
+      sessionDeleteByAccessTokenController
     )
   }
 }

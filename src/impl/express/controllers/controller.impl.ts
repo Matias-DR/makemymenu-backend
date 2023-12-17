@@ -1,17 +1,15 @@
 import { Exception } from 'domain/exceptions/exception'
 
-import type {
-  Response
-} from 'express'
+import type { Response } from 'express'
 
 export default class ControllerImpl {
-  private _res: Response | undefined
+  protected _res: Response | undefined = undefined
 
-  public get res (): Response | undefined {
+  protected get res (): Response | undefined {
     return this._res
   }
 
-  public set res (res: Response) {
+  protected set res (res: Response) {
     this._res = res
   }
 

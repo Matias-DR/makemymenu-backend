@@ -1,0 +1,5 @@
+export { default as UserAuthenticationController } from './authentication.user.controller'
+export { default as UserCreateController } from './create.user.controller'
+export { default as UserGetByEmailController } from './get-by-email.user.controller'
+export { default as UserUpdateController } from './update.user.controller'
+export { default as UserDeleteController } from './delete.user.controller'
