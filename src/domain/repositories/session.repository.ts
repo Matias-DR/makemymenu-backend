@@ -1,22 +1,15 @@
 import type { SessionEntity } from 'domain/entities'
 
 export default interface SessionRepository {
-  deleteByAccessToken: (accessToken: string) => Promise<void>
-  create: (tokens: {
-    refreshToken: string
-    accessToken: string
-  }) => Promise<SessionEntity>
+  create: (tokens: SessionEntity) => Promise<SessionEntity>
+  update: (
+    refreshToken: string,
+    newAccessToken: string
+  ) => Promise<SessionEntity>
   getByRefreshToken: (refreshToken: string) => Promise<SessionEntity>
   getByAccessToken: (accessToken: string) => Promise<SessionEntity>
-  updateTokens: (
-    refreshToken: string,
-    newTokens: {
-      refreshToken: string
-      accessToken: string
-    }
-  ) => Promise<void>
-  updateAccessToken: (
-    accessToken: string,
-    newAccessToken: string
-  ) => Promise<void>
+  deleteByRefreshToken: (refreshToken: string) => Promise<SessionEntity>
+  deleteByAccessToken: (accessToken: string) => Promise<SessionEntity>
+  existByRefreshToken: (refreshToken: string) => Promise<boolean>
+  existByAccessToken: (accessToken: string) => Promise<boolean>
 }

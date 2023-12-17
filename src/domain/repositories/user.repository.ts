@@ -1,14 +1,9 @@
-import { type Repository } from '.'
 import { type UserEntity } from 'domain/entities'
-import { type Nullable } from 'domain/shared/nullable'
 
-export default interface UserRepository extends Repository {
-  create: (input: {
-    email: string
-    password: string
-  }) => Promise<UserEntity>
-  getById: (id: string) => Promise<Nullable<any>>
-  getByEmail: (email: string) => Promise<Nullable<UserEntity>>
-  update: (form: UserEntity) => Promise<UserEntity>
-  deleteById: (id: string) => Promise<any>
+export default interface UserRepository {
+  create: (user: UserEntity) => Promise<UserEntity>
+  getByEmail: (email: string) => Promise<UserEntity>
+  update: (user: UserEntity) => Promise<UserEntity>
+  deleteByEmail: (email: string) => Promise<any>
+  existByEmail: (email: string) => Promise<boolean>
 }

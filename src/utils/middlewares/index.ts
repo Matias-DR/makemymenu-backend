@@ -1,2 +1,1 @@
-export { default as sessionVerifyMiddleware } from './session-verifiy.middleware'
-export { default as sessionVerifyForAuthMiddleware } from './session-verifiy-for-auth.middleware'
+export { default as sessionVerifyMdd } from './session-verifiy.mdd'
