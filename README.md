@@ -30,11 +30,7 @@ Asegúrate de tener instalado [Node.js](https://nodejs.org/en), y luego [PNPM](h
 
 ## Variables de entorno
 
-1. Creación del almacenamiento
-
-En la raíz del proyecto, cree un archivo con el nombre ".env"
-
-2. Configuración
+En la raíz del proyecto, crea un archivo con el nombre ".env" que contenga las siguientes variables
 
   ```bash
   MONGODB_URI=<mongodb-cluster-connection-string> // Por ejemplo: mongodb+srv://<usuario>:<contraseña>@cluster.<codigo-de-cluster>.mongodb.net/<nombre-de-db-dentro-del-cluster>?retryWrites=true&w=majority
@@ -46,15 +42,10 @@ En la raíz del proyecto, cree un archivo con el nombre ".env"
 
 ## Ejecución
 
-1. Posiciónate sobre el proyecto:
+1. Posiciónate sobre el proyecto y ejecútalo:
 
   ```bash
   cd ./makemymenu-backend
-  ```
-
-2. Ejecuta y establece las conexiones del servidor y la base de datos
-
-  ```bash
   pnpm run start
   ```
 
@@ -102,7 +93,7 @@ request.body: {
 
 - PATCH
 ```
-headers.authorization: 'Bearer <access-token>'
+headers.authorization: 'Bearer <refresh-token>'
 ```
 
 - DELETE
