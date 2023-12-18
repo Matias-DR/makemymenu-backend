@@ -2,7 +2,7 @@ import { Exception } from 'domain/exceptions/exception'
 
 import type { Response } from 'express'
 
-export default class ControllerImpl {
+export default class ControllerInfra {
   private _res!: Response
 
   get res (): Response {

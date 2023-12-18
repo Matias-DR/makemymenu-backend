@@ -4,11 +4,11 @@ import {
   AlreadyExistOperationException,
   UnsuccessfulOperationException
 } from 'domain/exceptions/operation.exceptions'
-import { UserModelImpl } from 'impl/mongoose/models'
+import { UserModelInfra } from 'infra/mongoose/models'
 
-export default class UserMongoDBRepositoryImpl implements UserRepository {
+export default class UserMongoDBRepositoryInfra implements UserRepository {
   async create (user: UserEntity): Promise<UserEntity> {
-    return await UserModelImpl.create(user)
+    return await UserModelInfra.create(user)
       .then((res: any) => res?.toJSON())
       .catch((error: any) => {
         if (error.code === 11000) {
@@ -20,12 +20,12 @@ export default class UserMongoDBRepositoryImpl implements UserRepository {
   }
 
   async getByEmail (email: string): Promise<UserEntity> {
-    return await UserModelImpl.findOne({ email })
+    return await UserModelInfra.findOne({ email })
       .then((res: any) => res?.toJSON())
   }
 
   async update (user: UserEntity): Promise<UserEntity> {
-    return await UserModelImpl.findOneAndUpdate(
+    return await UserModelInfra.findOneAndUpdate(
       { email: user.email },
       { $set: { ...user } },
       { runValidators: true, new: true }
@@ -33,12 +33,12 @@ export default class UserMongoDBRepositoryImpl implements UserRepository {
   }
 
   async deleteByEmail (email: string): Promise<UserEntity> {
-    return await UserModelImpl.findByIdAndDelete({ email })
+    return await UserModelInfra.findByIdAndDelete({ email })
       .then((res: any) => res?.toJSON())
   }
 
   async existByEmail (email: string): Promise<boolean> {
-    return await UserModelImpl.exists({ email })
+    return await UserModelInfra.exists({ email })
       .then((res: any) => res)
   }
 }

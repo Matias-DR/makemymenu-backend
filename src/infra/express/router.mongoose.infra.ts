@@ -1,21 +1,27 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
-import { mongoose as userCreateController } from './controllers/user/create.user.controller.impl'
-import { mongoose as userUpdateController } from './controllers/user/update.user.controller.impl'
-import { mongoose as userDeleteController } from './controllers/user/delete.user.controller.impl'
-import { mongoose as userAuthenticationController } from './controllers/user/authentication.user.controller.impl'
-import { mongoose as sessionCreateController } from './controllers/session/create.session.controller.impl'
-import { mongoose as sessionUpdateController } from './controllers/session/update.session.controller.impl'
-import { mongoose as sessionDeleteByRefreshTokenController } from './controllers/session/delete-by-refresh-token.session.controller.impl'
-import { mongoose as sessionDeleteByAccessTokenController } from './controllers/session/delete-by-access-token.session.controller.impl'
+import {
+  userAuthenticationControllerInfra,
+  userCreateControllerInfra,
+  userDeleteControllerInfra,
+  userUpdateControllerInfra
+} from './controllers/user'
+import {
+  sessionCreateControllerInfra,
+  // sessionGetByRefreshTokenControllerInfra,
+  // sessionGetByAccessTokenControllerInfra,
+  sessionDeleteByRefreshTokenControllerInfra,
+  sessionDeleteByAccessTokenControllerInfra,
+  sessionUpdateControllerInfra
+} from './controllers/session'
 import {
   verifySessionMdd,
   verifySessionForAuthMdd
-} from 'impl/express/middlewares'
+} from 'infra/express/middlewares'
 
 import { Router } from 'express'
 
-export default class RouterMongooseImpl {
+export default class RouterMongooseInfra {
   private readonly _router: Router
   private readonly _userRouter: Router
   private readonly _sessionRouter: Router
@@ -61,7 +67,7 @@ export default class RouterMongooseImpl {
     this.userRouter.post(
       '/',
       verifySessionForAuthMdd,
-      userCreateController
+      userCreateControllerInfra
     )
   }
 
@@ -69,8 +75,8 @@ export default class RouterMongooseImpl {
     this.userRouter.patch(
       '/',
       verifySessionMdd,
-      userUpdateController,
-      sessionUpdateController
+      userUpdateControllerInfra,
+      sessionUpdateControllerInfra
     )
   }
 
@@ -78,8 +84,8 @@ export default class RouterMongooseImpl {
     this.userRouter.delete(
       '/',
       verifySessionMdd,
-      userDeleteController,
-      sessionDeleteByAccessTokenController
+      userDeleteControllerInfra,
+      sessionDeleteByAccessTokenControllerInfra
     )
   }
 
@@ -87,8 +93,8 @@ export default class RouterMongooseImpl {
     this.authRouter.post(
       '/',
       verifySessionMdd,
-      userAuthenticationController,
-      sessionCreateController
+      userAuthenticationControllerInfra,
+      sessionCreateControllerInfra
     )
   }
 
@@ -96,7 +102,7 @@ export default class RouterMongooseImpl {
     this.sessionRouter.patch(
       '/',
       verifySessionMdd,
-      sessionUpdateController
+      sessionUpdateControllerInfra
     )
   }
 
@@ -104,12 +110,12 @@ export default class RouterMongooseImpl {
     this.sessionRouter.delete(
       '/refresh',
       verifySessionMdd,
-      sessionDeleteByRefreshTokenController
+      sessionDeleteByRefreshTokenControllerInfra
     )
     this.sessionRouter.delete(
       '/access',
       verifySessionMdd,
-      sessionDeleteByAccessTokenController
+      sessionDeleteByAccessTokenControllerInfra
     )
   }
 }

@@ -1,20 +1,20 @@
 import type { SessionEntity } from 'domain/entities'
 import type { SessionRepository } from 'domain/repositories'
-import { SessionModelImpl } from 'impl/mongoose/models'
+import { SessionModelInfra } from 'infra/mongoose/models'
 
-export default class SessionMongoDBRepositoryImpl implements SessionRepository {
+export default class SessionMongoDBRepositoryInfra implements SessionRepository {
   async create (tokens: SessionEntity): Promise<SessionEntity> {
-    return await SessionModelImpl.create(tokens)
+    return await SessionModelInfra.create(tokens)
       .then((res: any) => res?.toJSON())
   }
 
   async getByRefreshToken (refreshToken: string): Promise<SessionEntity> {
-    return await SessionModelImpl.findOne({ refreshToken })
+    return await SessionModelInfra.findOne({ refreshToken })
       .then((res: any) => res?.toJSON())
   }
 
   async getByAccessToken (accessToken: string): Promise<SessionEntity> {
-    return await SessionModelImpl.findOne({ accessToken })
+    return await SessionModelInfra.findOne({ accessToken })
       .then((res: any) => res?.toJSON())
   }
 
@@ -22,7 +22,7 @@ export default class SessionMongoDBRepositoryImpl implements SessionRepository {
     refreshToken: string,
     newAccessToken: string
   ): Promise<SessionEntity> {
-    return await SessionModelImpl.updateOne(
+    return await SessionModelInfra.updateOne(
       { refreshToken },
       { accessToken: newAccessToken }
     )
@@ -30,22 +30,22 @@ export default class SessionMongoDBRepositoryImpl implements SessionRepository {
   }
 
   async deleteByRefreshToken (refreshToken: string): Promise<SessionEntity> {
-    return await SessionModelImpl.deleteOne({ refreshToken })
+    return await SessionModelInfra.deleteOne({ refreshToken })
       .then((res: any) => res?.toJSON())
   }
 
   async deleteByAccessToken (accessToken: string): Promise<SessionEntity> {
-    return await SessionModelImpl.deleteOne({ accessToken })
+    return await SessionModelInfra.deleteOne({ accessToken })
       .then((res: any) => res?.toJSON())
   }
 
   async existByRefreshToken (refreshToken: string): Promise<boolean> {
-    return await SessionModelImpl.exists({ refreshToken })
+    return await SessionModelInfra.exists({ refreshToken })
       .then((res: any) => res)
   }
 
   async existByAccessToken (accessToken: string): Promise<boolean> {
-    return await SessionModelImpl.exists({ accessToken })
+    return await SessionModelInfra.exists({ accessToken })
       .then((res: any) => res)
   }
 }

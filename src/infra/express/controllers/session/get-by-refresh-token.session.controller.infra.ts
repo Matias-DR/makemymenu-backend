@@ -1,14 +1,14 @@
 import { SessionGetByRefreshTokenController } from 'controllers/session'
-import Controller from '../controller.impl'
+import Controller from '../controller.infra'
 import type { SessionRepository } from 'domain/repositories'
-import { SessionMongoDBRepositoryImpl } from 'impl/mongoose/repositories'
+import { SessionMongoDBRepositoryInfra } from 'infra/mongoose/repositories'
 
 import type {
   Request,
   Response
 } from 'express'
 
-export default class SessionGetByRefreshTokenControllerImpl extends Controller {
+export class SessionGetByRefreshTokenControllerInfra extends Controller {
   private readonly repository: SessionRepository
 
   constructor (SessionRepository: new () => SessionRepository) {
@@ -34,6 +34,6 @@ export async function mongoose (
   req: Request,
   res: Response
 ): Promise<void> {
-  const controller = new SessionGetByRefreshTokenControllerImpl(SessionMongoDBRepositoryImpl)
+  const controller = new SessionGetByRefreshTokenControllerInfra(SessionMongoDBRepositoryInfra)
   await controller.exe(req, res)
 }

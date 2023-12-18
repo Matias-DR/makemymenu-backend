@@ -1,7 +1,7 @@
 import { UserUpdateController } from 'controllers/user'
 import type { UserRepository } from 'domain/repositories'
-import ControllerImpl from '../controller.impl'
-import { UserMongoDBRepositoryImpl } from 'impl/mongoose/repositories'
+import ControllerInfra from '../controller.infra'
+import { UserMongoDBRepositoryInfra } from 'infra/mongoose/repositories'
 
 import type {
   NextFunction,
@@ -9,7 +9,7 @@ import type {
   Response
 } from 'express'
 
-export class UserUpdateControllerImpl extends ControllerImpl {
+export class UserUpdateControllerInfra extends ControllerInfra {
   private readonly controller: UserUpdateController
 
   constructor (UserRepository: new () => UserRepository) {
@@ -37,6 +37,6 @@ export const mongoose = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const controller = new UserUpdateControllerImpl(UserMongoDBRepositoryImpl)
+  const controller = new UserUpdateControllerInfra(UserMongoDBRepositoryInfra)
   await controller.exe(req, res, next)
 }

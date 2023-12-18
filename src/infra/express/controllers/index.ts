@@ -1,1 +1,1 @@
-export { default as ControllerImpl } from './controller.impl'
+export { default as ControllerInfra } from './controller.infra'

@@ -1,4 +1,4 @@
-import { errorMddImpl } from './'
+import { errorMddInfra } from '.'
 import { sessionVerifyMdd } from 'utils/middlewares'
 
 import type {
@@ -7,18 +7,18 @@ import type {
   Response
 } from 'express'
 
-const verifySessionMdd = async (
+const verifySessionForAuthMdd = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   await sessionVerifyMdd(
     req.headers,
-    errorMddImpl,
+    errorMddInfra,
     res,
     next,
-    true
+    false
   )
 }
 
-export default verifySessionMdd
+export default verifySessionForAuthMdd

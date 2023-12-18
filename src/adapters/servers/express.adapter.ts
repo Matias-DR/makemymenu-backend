@@ -1,4 +1,4 @@
-import RouterMongooseImpl from 'impl/express/router.mongoose.impl'
+import RouterMongooseInfra from 'infra/express/router.mongoose.impl'
 
 import express, {
   type Application
@@ -8,13 +8,13 @@ import 'dotenv/config'
 
 export class ExpressAdapter {
   private readonly _app: Application
-  private readonly _router: RouterMongooseImpl
+  private readonly _router: RouterMongooseInfra
   private readonly SERVER_PORT: number = parseInt(process.env.EXPRESS_SERVER_PORT ?? '3000')
   private readonly SERVER_HOST: string = process.env.EXPRESS_SERVER_HOST ?? 'localhost'
 
   constructor () {
     this._app = express()
-    this._router = new RouterMongooseImpl()
+    this._router = new RouterMongooseInfra()
     this.configure()
     this.init()
   }
@@ -23,7 +23,7 @@ export class ExpressAdapter {
     return this._app
   }
 
-  get router (): RouterMongooseImpl {
+  get router (): RouterMongooseInfra {
     return this._router
   }
 

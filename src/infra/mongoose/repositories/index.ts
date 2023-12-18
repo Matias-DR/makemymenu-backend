@@ -1,2 +1,2 @@
-export { default as UserMongoDBRepositoryImpl } from './user.repository.impl'
-export { default as SessionMongoDBRepositoryImpl } from './session.repository.impl'
+export { default as UserMongoDBRepositoryInfra } from './user.repository.infra'
+export { default as SessionMongoDBRepositoryInfra } from './session.repository.infra'

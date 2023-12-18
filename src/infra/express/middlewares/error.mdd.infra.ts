@@ -1,6 +1,6 @@
 import { Exception } from 'domain/exceptions/exception'
 
-const errorMddImpl = (
+const errorMddInfra = (
   err: any,
   res: any
 ): void => {
@@ -11,4 +11,4 @@ const errorMddImpl = (
   }
 }
 
-export default errorMddImpl
+export default errorMddInfra

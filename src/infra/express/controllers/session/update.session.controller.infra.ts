@@ -1,14 +1,14 @@
-import { SessionDeleteByAccessTokenController } from 'controllers/session'
-import Controller from '../controller.impl'
+import { SessionUpdateTokenController } from 'controllers/session'
+import Controller from '../controller.infra'
 import type { SessionRepository } from 'domain/repositories'
-import { SessionMongoDBRepositoryImpl } from 'impl/mongoose/repositories'
+import { SessionMongoDBRepositoryInfra } from 'infra/mongoose/repositories'
 
 import type {
   Request,
   Response
 } from 'express'
 
-export class SessionDeleteByAccessTokenControllerImpl extends Controller {
+export class SessionUpdateControllerInfra extends Controller {
   private readonly repository: SessionRepository
 
   constructor (SessionRepository: new () => SessionRepository) {
@@ -21,7 +21,7 @@ export class SessionDeleteByAccessTokenControllerImpl extends Controller {
     res: Response
   ): Promise<void> {
     this.res = res
-    const controller = new SessionDeleteByAccessTokenController(this.repository)
+    const controller = new SessionUpdateTokenController(this.repository)
     await controller.exe(
       req.headers,
       this.success,
@@ -34,6 +34,6 @@ export async function mongoose (
   req: Request,
   res: Response
 ): Promise<void> {
-  const controller = new SessionDeleteByAccessTokenControllerImpl(SessionMongoDBRepositoryImpl)
+  const controller = new SessionUpdateControllerInfra(SessionMongoDBRepositoryInfra)
   await controller.exe(req, res)
 }

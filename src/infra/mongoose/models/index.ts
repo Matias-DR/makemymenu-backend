@@ -1,2 +1,2 @@
-export { default as UserModelImpl } from './user.model'
-export { default as SessionModelImpl } from './session.model'
+export { default as UserModelInfra } from './user.model.infra'
+export { default as SessionModelInfra } from './session.model.infra'

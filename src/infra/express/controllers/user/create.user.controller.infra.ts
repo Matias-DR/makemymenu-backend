@@ -1,14 +1,14 @@
 import { UserCreateController } from 'controllers/user'
 import type { UserRepository } from 'domain/repositories'
-import ControllerImpl from '../controller.impl'
-import { UserMongoDBRepositoryImpl } from 'impl/mongoose/repositories'
+import ControllerInfra from '../controller.infra'
+import { UserMongoDBRepositoryInfra } from 'infra/mongoose/repositories'
 
 import type {
   Request,
   Response
 } from 'express'
 
-export class UserCreateControllerImpl extends ControllerImpl {
+export class UserCreateControllerInfra extends ControllerInfra {
   private readonly controller: UserCreateController
 
   constructor (UserRepository: new () => UserRepository) {
@@ -33,6 +33,6 @@ export const mongoose = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const controller = new UserCreateControllerImpl(UserMongoDBRepositoryImpl)
+  const controller = new UserCreateControllerInfra(UserMongoDBRepositoryInfra)
   await controller.exe(req, res)
 }

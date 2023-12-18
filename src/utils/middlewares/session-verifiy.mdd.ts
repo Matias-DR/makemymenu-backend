@@ -1,5 +1,5 @@
 import { SessionDBGateway } from 'gateways/databases'
-import { SessionMongoDBRepositoryImpl } from 'impl/mongoose/repositories'
+import { SessionMongoDBRepositoryInfra } from 'infra/mongoose/repositories'
 import { SessionModel } from 'domain/models'
 import { UnhauthorizedException } from 'domain/exceptions/session.exceptions'
 
@@ -18,7 +18,7 @@ const sessionVerifyMdd = async (
     // Si el token es inválido levanto error
     SessionModel.test(accessToken)
 
-    const repository = new SessionMongoDBRepositoryImpl()
+    const repository = new SessionMongoDBRepositoryInfra()
     const dbGateway = new SessionDBGateway(repository)
 
     if (!await dbGateway.existByAccessToken(accessToken)) {

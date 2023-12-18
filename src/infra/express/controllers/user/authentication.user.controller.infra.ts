@@ -1,7 +1,7 @@
-import { UserDeleteController } from 'controllers/user'
+import { UserAuthenticationController } from 'controllers/user'
 import type { UserRepository } from 'domain/repositories'
-import ControllerImpl from '../controller.impl'
-import { UserMongoDBRepositoryImpl } from 'impl/mongoose/repositories'
+import ControllerInfra from '../controller.infra'
+import { UserMongoDBRepositoryInfra } from 'infra/mongoose/repositories'
 
 import type {
   NextFunction,
@@ -9,12 +9,12 @@ import type {
   Response
 } from 'express'
 
-export class UserDeleteControllerImpl extends ControllerImpl {
-  private readonly controller: UserDeleteController
+export class UserAuthenticationControllerInfra extends ControllerInfra {
+  private readonly controller: UserAuthenticationController
 
   constructor (UserRepository: new () => UserRepository) {
     super()
-    this.controller = new UserDeleteController(new UserRepository())
+    this.controller = new UserAuthenticationController(new UserRepository())
   }
 
   async exe (
@@ -24,7 +24,6 @@ export class UserDeleteControllerImpl extends ControllerImpl {
   ): Promise<void> {
     this.res = res
     await this.controller.exe(
-      req.headers,
       req.body,
       this.error,
       next
@@ -37,6 +36,6 @@ export const mongoose = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const controller = new UserDeleteControllerImpl(UserMongoDBRepositoryImpl)
+  const controller = new UserAuthenticationControllerInfra(UserMongoDBRepositoryInfra)
   await controller.exe(req, res, next)
 }
