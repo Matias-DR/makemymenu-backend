@@ -51,6 +51,16 @@ En la raíz del proyecto, crea un archivo con el nombre ".env" que contenga las 
 
 ## APIs
 
+### /api/auth
+
+- POST
+```
+request.body: {
+  email:ex00@ex.com
+  password:123qwe78
+}
+```
+
 ### /api/user
 
 - POST
@@ -83,18 +93,19 @@ request.body: {
 
 ### /api/session
 
-- POST
-```
-request.body: {
-  email:ex00@ex.com
-  password:123qwe78
-}
-```
-
 - PATCH
 ```
 headers.authorization: 'Bearer <refresh-token>'
 ```
+
+### /api/session/refresh
+
+- DELETE
+```
+headers.authorization: 'Bearer <refresh-token>'
+```
+
+### /api/session/access
 
 - DELETE
 ```
