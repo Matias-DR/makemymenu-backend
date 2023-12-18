@@ -3,20 +3,20 @@ import { Exception } from 'domain/exceptions/exception'
 import type { Response } from 'express'
 
 export default class ControllerImpl {
-  protected _res: Response | undefined = undefined
+  private _res!: Response
 
-  protected get res (): Response | undefined {
+  get res (): Response {
     return this._res
   }
 
-  protected set res (res: Response) {
+  set res (res: Response) {
     this._res = res
   }
 
-  protected success (
+  protected success = (
     code: number,
     data?: any
-  ): void {
+  ): void => {
     if (this.res !== undefined) {
       if (data !== null && data !== undefined) {
         this.res.status(code).json(data)
@@ -26,12 +26,12 @@ export default class ControllerImpl {
     }
   }
 
-  protected error (
-    error: any
-  ): void {
+  protected error = (
+    err: any
+  ): void => {
     if (this.res !== undefined) {
-      if (error instanceof Exception) {
-        this.res.status(error.code).json(error.spanishMessage)
+      if (err instanceof Exception) {
+        this.res.status(err.code).json(err.spanishMessage)
       } else {
         this.res.status(500).json()
       }

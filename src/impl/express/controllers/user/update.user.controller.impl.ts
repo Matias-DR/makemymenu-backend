@@ -32,11 +32,11 @@ export class UserUpdateControllerImpl extends ControllerImpl {
   }
 }
 
-export async function mongoose (
+export const mongoose = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+): Promise<void> => {
   const controller = new UserUpdateControllerImpl(UserMongoDBRepositoryImpl)
   await controller.exe(req, res, next)
 }

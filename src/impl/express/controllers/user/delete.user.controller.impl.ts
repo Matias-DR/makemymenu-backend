@@ -32,11 +32,11 @@ export class UserDeleteControllerImpl extends ControllerImpl {
   }
 }
 
-export async function mongoose (
+export const mongoose = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+): Promise<void> => {
   const controller = new UserDeleteControllerImpl(UserMongoDBRepositoryImpl)
   await controller.exe(req, res, next)
 }

@@ -29,10 +29,10 @@ export class UserCreateControllerImpl extends ControllerImpl {
   }
 }
 
-export async function mongoose (
+export const mongoose = async (
   req: Request,
   res: Response
-): Promise<void> {
+): Promise<void> => {
   const controller = new UserCreateControllerImpl(UserMongoDBRepositoryImpl)
   await controller.exe(req, res)
 }
