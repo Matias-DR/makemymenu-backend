@@ -119,4 +119,4 @@ headers.authorization: 'Bearer <access-token>'
 
 ## Estructura del proyecto
 
-!(https://github.com/Matias-DR/makemymenu-backend/blob/main/clean-architecture-diagram.png)
+!(./clean-architecture-diagram.png)
