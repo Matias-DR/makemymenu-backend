@@ -3,7 +3,7 @@ import { SessionMongoDBRepositoryImpl } from 'impl/mongoose/repositories'
 import { SessionModel } from 'domain/models'
 import { UnhauthorizedException } from 'domain/exceptions/session.exceptions'
 
-export default async function sessionVerifyMdd (
+const sessionVerifyMdd = async (
   headers: any,
   error: (
     err: any,
@@ -12,7 +12,7 @@ export default async function sessionVerifyMdd (
   res: any,
   next: () => void,
   sessionNeeded: boolean
-): Promise<void> {
+): Promise<void> => {
   try {
     const accessToken = SessionModel.extractTokenFromHeaders(headers)
     // Si el token es inválido levanto error
@@ -38,3 +38,5 @@ export default async function sessionVerifyMdd (
   // Si no se requiere sesión
   next()
 }
+
+export default sessionVerifyMdd

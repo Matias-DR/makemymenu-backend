@@ -7,11 +7,11 @@ import type {
   Response
 } from 'express'
 
-export default async function verifySessionForAuthMdd (
+const verifySessionForAuthMdd = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+): Promise<void> => {
   await sessionVerifyMdd(
     req.headers,
     errorMddImpl,
@@ -20,3 +20,5 @@ export default async function verifySessionForAuthMdd (
     false
   )
 }
+
+export default verifySessionForAuthMdd

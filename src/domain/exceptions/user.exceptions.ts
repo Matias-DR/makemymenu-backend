@@ -90,6 +90,16 @@ export class WrongPasswordConfirmationUserException extends Exception {
   }
 }
 
+export class PasswordConfirmationRequiredUserException extends Exception {
+  constructor () {
+    super(
+      'Password confirmation is required',
+      400,
+      'La confirmación de contraseña es requerida.'
+    )
+  }
+}
+
 export class WrongPasswordUserException extends Exception {
   constructor () {
     super(
