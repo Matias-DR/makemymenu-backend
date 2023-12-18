@@ -33,7 +33,7 @@ export default class UserMongoDBRepositoryInfra implements UserRepository {
   }
 
   async deleteByEmail (email: string): Promise<UserEntity> {
-    return await UserModelInfra.findByIdAndDelete({ email })
+    return await UserModelInfra.findOneAndDelete({ email })
       .then((res: any) => res?.toJSON())
   }
 

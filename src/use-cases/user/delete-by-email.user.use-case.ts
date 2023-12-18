@@ -1,5 +1,6 @@
 import { UserDBGateway } from 'gateways/databases'
 import type { UserRepository } from 'domain/repositories'
+import { WrongPasswordUserException } from 'domain/exceptions/user.exceptions'
 
 export default class UserDeleteByEmailUseCase {
   private readonly dbGateway: UserDBGateway
@@ -14,7 +15,9 @@ export default class UserDeleteByEmailUseCase {
   ): Promise<void> {
     const user = await this.dbGateway.getByEmail(email)
     user.testPassword(password)
-    await user.comparePasswords(password)
+    if (!await user.comparePasswords(password)) {
+      throw new WrongPasswordUserException()
+    }
     await this.dbGateway.deleteByEmail(email)
   }
 }
