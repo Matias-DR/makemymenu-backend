@@ -119,4 +119,4 @@ headers.authorization: 'Bearer <access-token>'
 
 ## Estructura del proyecto
 
-!(/clean-architecture-diagram.png)
+!(./clean-architecture-diagram.png)
