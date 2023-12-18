@@ -21,22 +21,19 @@ export default class SessionMongoDBRepositoryInfra implements SessionRepository 
   async update (
     refreshToken: string,
     newAccessToken: string
-  ): Promise<SessionEntity> {
-    return await SessionModelInfra.updateOne(
+  ): Promise<void> {
+    await SessionModelInfra.updateOne(
       { refreshToken },
       { accessToken: newAccessToken }
     )
-      .then((res: any) => res?.toJSON())
   }
 
-  async deleteByRefreshToken (refreshToken: string): Promise<SessionEntity> {
-    return await SessionModelInfra.deleteOne({ refreshToken })
-      .then((res: any) => res?.toJSON())
+  async deleteByRefreshToken (refreshToken: string): Promise<void> {
+    await SessionModelInfra.deleteOne({ refreshToken })
   }
 
-  async deleteByAccessToken (accessToken: string): Promise<SessionEntity> {
-    return await SessionModelInfra.deleteOne({ accessToken })
-      .then((res: any) => res?.toJSON())
+  async deleteByAccessToken (accessToken: string): Promise<void> {
+    await SessionModelInfra.deleteOne({ accessToken })
   }
 
   async existByRefreshToken (refreshToken: string): Promise<boolean> {

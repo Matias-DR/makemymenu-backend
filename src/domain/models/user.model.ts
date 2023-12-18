@@ -102,7 +102,7 @@ export default class UserModel implements UserEntity {
       throw new NothingToUpdateOperationException()
     }
     // Si no hay contraseña
-    if (!this.isEmpty(actualPassword)) {
+    if (this.isEmpty(actualPassword)) {
       throw new PasswordRequiredUserException()
     }
     // Si hay nueva contraseña y su confirmación

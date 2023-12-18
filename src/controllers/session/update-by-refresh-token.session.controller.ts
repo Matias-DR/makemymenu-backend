@@ -1,12 +1,12 @@
 import type { SessionRepository } from 'domain/repositories'
-import { SessionUpdateUseCase } from 'use-cases/session'
+import { SessionUpdateByRefreshTokenUseCase } from 'use-cases/session'
 import type {
   SuccessfullResponse,
   UnsuccessfullResponse
 } from 'controllers/definitions'
 import { SessionModel } from 'domain/models'
 
-export default class SessionUpdateController {
+export default class SessionUpdateByRefreshTokenController {
   constructor (private readonly repository: SessionRepository) { }
 
   public async exe (
@@ -16,7 +16,7 @@ export default class SessionUpdateController {
   ): Promise<void> {
     try {
       const refreshToken = SessionModel.extractTokenFromHeaders(headers)
-      const useCase = new SessionUpdateUseCase(this.repository)
+      const useCase = new SessionUpdateByRefreshTokenUseCase(this.repository)
       const session = await useCase.exe(refreshToken)
       success(
         200,

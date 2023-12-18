@@ -1,4 +1,4 @@
-import RouterMongooseInfra from 'infra/express/router.mongoose.impl'
+import RouterMongooseInfra from 'infra/express/router.mongoose.infra'
 
 import express, {
   type Application

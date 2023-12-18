@@ -3,4 +3,5 @@ export { mongoose as sessionGetByRefreshTokenControllerInfra } from './get-by-re
 export { mongoose as sessionGetByAccessTokenControllerInfra } from './get-by-access-token.session.controller.infra'
 export { mongoose as sessionDeleteByRefreshTokenControllerInfra } from './delete-by-refresh-token.session.controller.infra'
 export { mongoose as sessionDeleteByAccessTokenControllerInfra } from './delete-by-access-token.session.controller.infra'
-export { mongoose as sessionUpdateControllerInfra } from './update.session.controller.infra'
+export { mongoose as sessionUpdateByRefreshTokenController } from './update-by-refresh-token.session.controller.infra'
+export { mongoose as sessionUpdateByAccessTokenController } from './update-by-access-token.session.controller.infra'

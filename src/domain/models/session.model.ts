@@ -6,8 +6,8 @@ import {
 } from 'domain/exceptions/session.exceptions'
 import {
   JWT_SECRET as SECRET,
-  REFRESH_TOKEN_EXPIRES_IN as REFRESH_TIME,
-  ACCESS_TOKEN_EXPIRES_IN as ACCESS_TIME
+  REFRESH_TOKEN_EXPIRES_IN as REFRESH_EXP_TIME,
+  ACCESS_TOKEN_EXPIRES_IN as ACCESS_EXP_TIME
 } from 'utils/constants.util'
 
 import {
@@ -37,14 +37,14 @@ export default class SessionModel implements SessionEntity {
 
   public static createFromEmail (email: string): SessionModel {
     const refreshToken = sign(
-      email,
+      { email },
       SECRET,
-      { expiresIn: REFRESH_TIME }
+      { expiresIn: REFRESH_EXP_TIME }
     )
     const accessToken = sign(
-      email,
+      { email },
       SECRET,
-      { expiresIn: ACCESS_TIME }
+      { expiresIn: ACCESS_EXP_TIME }
     )
     const session = {
       refreshToken,
@@ -100,9 +100,9 @@ export default class SessionModel implements SessionEntity {
   public update (): void {
     const email = SessionModel.decode(this._accessToken)
     this._accessToken = sign(
-      email,
+      { email },
       SECRET,
-      { expiresIn: ACCESS_TIME }
+      { expiresIn: ACCESS_EXP_TIME }
     )
   }
 

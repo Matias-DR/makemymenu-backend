@@ -30,25 +30,19 @@ export default class SessionDBGateway {
     return await this.repository.existByAccessToken(token)
   }
 
-  async update (session: SessionModel): Promise<SessionModel> {
+  async update (session: SessionModel): Promise<void> {
     const tokens = session.toJSON()
-    const result = await this.repository.update(
-      tokens.accessToken,
-      tokens.refreshToken
+    await this.repository.update(
+      tokens.refreshToken,
+      tokens.accessToken
     )
-    const sessionUpdated = new SessionModel(result)
-    return sessionUpdated
   }
 
-  async deleteByRefreshToken (token: string): Promise<SessionModel> {
-    const result = await this.repository.deleteByRefreshToken(token)
-    const session = new SessionModel(result)
-    return session
+  async deleteByRefreshToken (token: string): Promise<void> {
+    await this.repository.deleteByRefreshToken(token)
   }
 
-  async deleteByAccessToken (token: string): Promise<SessionModel> {
-    const result = await this.repository.deleteByAccessToken(token)
-    const session = new SessionModel(result)
-    return session
+  async deleteByAccessToken (token: string): Promise<void> {
+    await this.repository.deleteByAccessToken(token)
   }
 }

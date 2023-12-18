@@ -5,11 +5,11 @@ export default interface SessionRepository {
   update: (
     refreshToken: string,
     newAccessToken: string
-  ) => Promise<SessionEntity>
+  ) => Promise<void>
   getByRefreshToken: (refreshToken: string) => Promise<SessionEntity>
   getByAccessToken: (accessToken: string) => Promise<SessionEntity>
-  deleteByRefreshToken: (refreshToken: string) => Promise<SessionEntity>
-  deleteByAccessToken: (accessToken: string) => Promise<SessionEntity>
+  deleteByRefreshToken: (refreshToken: string) => Promise<void>
+  deleteByAccessToken: (accessToken: string) => Promise<void>
   existByRefreshToken: (refreshToken: string) => Promise<boolean>
   existByAccessToken: (accessToken: string) => Promise<boolean>
 }

@@ -1,7 +1,7 @@
 import { SessionDBGateway } from 'gateways/databases'
 import { SessionMongoDBRepositoryInfra } from 'infra/mongoose/repositories'
 import { SessionModel } from 'domain/models'
-import { UnhauthorizedException } from 'domain/exceptions/session.exceptions'
+import { ExpiredTokenException, UnhauthorizedException } from 'domain/exceptions/session.exceptions'
 
 const sessionVerifyMdd = async (
   headers: any,
@@ -11,7 +11,8 @@ const sessionVerifyMdd = async (
   ) => void,
   res: any,
   next: () => void,
-  sessionNeeded: boolean
+  sessionNeeded: boolean,
+  isForUpdTkn = false
 ): Promise<void> => {
   try {
     const accessToken = SessionModel.extractTokenFromHeaders(headers)
@@ -21,18 +22,28 @@ const sessionVerifyMdd = async (
     const repository = new SessionMongoDBRepositoryInfra()
     const dbGateway = new SessionDBGateway(repository)
 
-    if (!await dbGateway.existByAccessToken(accessToken)) {
-      // Si no existe la sesión levanto error
-      throw new UnhauthorizedException()
+    if (!isForUpdTkn) {
+      if (!await dbGateway.existByAccessToken(accessToken)) {
+        // Si no existe la sesión levanto error
+        throw new UnhauthorizedException()
+      }
+    } else {
+      if (!await dbGateway.existByRefreshToken(accessToken)) {
+        // Si no existe la sesión levanto error
+        throw new UnhauthorizedException()
+      }
     }
   } catch (err: any) {
-    // Si el token es inválido o no existe la sesión y se requiere sesión
-    if (sessionNeeded) {
-      error(
-        err,
-        res
-      )
-      return
+    const cond = err instanceof ExpiredTokenException && isForUpdTkn
+    if (!(cond)) {
+      // Si el token es inválido o no existe la sesión y se requiere sesión
+      if (sessionNeeded) {
+        error(
+          err,
+          res
+        )
+        return
+      }
     }
   }
   // Si no se requiere sesión

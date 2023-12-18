@@ -1,4 +1,4 @@
-import { SessionUpdateTokenController } from 'controllers/session'
+import { SessionUpdateByRefreshTokenController } from 'controllers/session'
 import Controller from '../controller.infra'
 import type { SessionRepository } from 'domain/repositories'
 import { SessionMongoDBRepositoryInfra } from 'infra/mongoose/repositories'
@@ -21,7 +21,7 @@ export class SessionUpdateControllerInfra extends Controller {
     res: Response
   ): Promise<void> {
     this.res = res
-    const controller = new SessionUpdateTokenController(this.repository)
+    const controller = new SessionUpdateByRefreshTokenController(this.repository)
     await controller.exe(
       req.headers,
       this.success,
