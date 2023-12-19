@@ -1,13 +1,8 @@
-import { UserDBGateway } from 'gateways/databases'
-import type { UserRepository } from 'domain/repositories'
+import type { UserGateway } from 'domain/gateways'
 import { WrongPasswordUserException } from 'domain/exceptions/user.exceptions'
 
 export default class UserDeleteByEmailUseCase {
-  private readonly dbGateway: UserDBGateway
-
-  constructor (private readonly repository: UserRepository) {
-    this.dbGateway = new UserDBGateway(this.repository)
-  }
+  constructor (private readonly dbGateway: UserGateway) { }
 
   async exe (
     email: string,

@@ -12,9 +12,9 @@ import type {
 export class UserDeleteControllerInfra extends ControllerInfra {
   private readonly controller: UserDeleteController
 
-  constructor (UserRepository: new () => UserRepository) {
+  constructor (Repository: new () => UserRepository) {
     super()
-    this.controller = new UserDeleteController(new UserRepository())
+    this.controller = new UserDeleteController(Repository)
   }
 
   async exe (

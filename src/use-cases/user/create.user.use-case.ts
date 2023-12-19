@@ -4,15 +4,10 @@ import {
   PasswordConfirmationRequiredUserException,
   WrongPasswordConfirmationUserException
 } from 'domain/exceptions/user.exceptions'
-import type { UserRepository } from 'domain/repositories'
-import { UserDBGateway } from 'gateways/databases'
+import type { UserGateway } from 'domain/gateways'
 
 export default class UserCreateUseCase {
-  private readonly dbGateway: UserDBGateway
-
-  constructor (private readonly repository: UserRepository) {
-    this.dbGateway = new UserDBGateway(this.repository)
-  }
+  constructor (private readonly dbGateway: UserGateway) {}
 
   async exe (
     email: string,

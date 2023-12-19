@@ -9,11 +9,11 @@ import type {
 } from 'express'
 
 export class SessionDeleteByAccessTokenControllerInfra extends Controller {
-  private readonly repository: SessionRepository
+  private readonly controller: SessionDeleteByAccessTokenController
 
-  constructor (SessionRepository: new () => SessionRepository) {
+  constructor (Repository: new () => SessionRepository) {
     super()
-    this.repository = new SessionRepository()
+    this.controller = new SessionDeleteByAccessTokenController(Repository)
   }
 
   async exe (
@@ -21,8 +21,7 @@ export class SessionDeleteByAccessTokenControllerInfra extends Controller {
     res: Response
   ): Promise<void> {
     this.res = res
-    const controller = new SessionDeleteByAccessTokenController(this.repository)
-    await controller.exe(
+    await this.controller.exe(
       req.headers,
       this.success,
       this.error

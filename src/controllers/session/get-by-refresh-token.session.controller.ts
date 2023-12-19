@@ -7,9 +7,9 @@ import type {
 } from 'controllers/definitions'
 
 export default class SessionGetByRefreshTokenController extends SessionGetByTokenController {
-  constructor (repository: SessionRepository) {
+  constructor (Repository: new () => SessionRepository) {
     super(
-      repository,
+      Repository,
       SessionGetByRefreshTokenUseCase
     )
   }

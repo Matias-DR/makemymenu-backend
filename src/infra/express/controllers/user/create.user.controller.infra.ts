@@ -11,9 +11,9 @@ import type {
 export class UserCreateControllerInfra extends ControllerInfra {
   private readonly controller: UserCreateController
 
-  constructor (UserRepository: new () => UserRepository) {
+  constructor (Repository: new () => UserRepository) {
     super()
-    this.controller = new UserCreateController(new UserRepository())
+    this.controller = new UserCreateController(Repository)
   }
 
   async exe (

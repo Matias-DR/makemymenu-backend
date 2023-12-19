@@ -9,11 +9,11 @@ import type {
 } from 'express'
 
 export class SessionUpdateControllerInfra extends Controller {
-  private readonly repository: SessionRepository
+  private readonly controller: SessionUpdateByAccessTokenController
 
-  constructor (SessionRepository: new () => SessionRepository) {
+  constructor (Repository: new () => SessionRepository) {
     super()
-    this.repository = new SessionRepository()
+    this.controller = new SessionUpdateByAccessTokenController(Repository)
   }
 
   async exe (
@@ -21,8 +21,7 @@ export class SessionUpdateControllerInfra extends Controller {
     res: Response
   ): Promise<void> {
     this.res = res
-    const controller = new SessionUpdateByAccessTokenController(this.repository)
-    await controller.exe(
+    await this.controller.exe(
       req.headers,
       this.success,
       this.error

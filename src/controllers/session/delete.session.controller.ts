@@ -8,17 +8,20 @@ import type {
   SuccessfullResponse,
   UnsuccessfullResponse
 } from 'controllers/definitions'
+import { SessionDBGateway } from 'gateways/databases'
+import type { SessionGateway } from 'domain/gateways'
 
 export default class SessionDeleteController {
   protected readonly useCase:
   SessionDeleteByRefreshTokenUseCase | SessionDeleteByAccessTokenUseCase
 
   constructor (
-    repository: SessionRepository,
-    UseCase: new (repository: SessionRepository) =>
+    Repository: new () => SessionRepository,
+    UseCase: new (dbGateway: SessionGateway) =>
     SessionDeleteByRefreshTokenUseCase | SessionDeleteByAccessTokenUseCase
   ) {
-    this.useCase = new UseCase(repository)
+    const gbGateway = new SessionDBGateway(Repository)
+    this.useCase = new UseCase(gbGateway)
   }
 
   protected async exe (

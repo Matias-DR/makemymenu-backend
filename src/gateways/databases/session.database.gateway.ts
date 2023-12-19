@@ -1,8 +1,13 @@
+import type { SessionGateway } from 'domain/gateways'
 import { SessionModel } from 'domain/models'
 import type { SessionRepository } from 'domain/repositories'
 
-export default class SessionDBGateway {
-  constructor (private readonly repository: SessionRepository) {}
+export default class SessionDBGateway implements SessionGateway {
+  private readonly repository: SessionRepository
+
+  constructor (Repository: new () => SessionRepository) {
+    this.repository = new Repository()
+  }
 
   async create (session: SessionModel): Promise<SessionModel> {
     const result = await this.repository.create(session.toJSON())

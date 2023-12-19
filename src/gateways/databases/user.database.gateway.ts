@@ -1,12 +1,19 @@
-import type { UserEntity } from 'domain/entities'
+import type { UserGateway } from 'domain/gateways'
 import { UserModel } from 'domain/models'
 import type { UserRepository } from 'domain/repositories'
 
-export default class UserDBGateway {
-  constructor (private readonly repository: UserRepository) {}
+export default class UserDBGateway implements UserGateway {
+  private readonly repository: UserRepository
 
-  async create (user: UserModel): Promise<void> {
-    await this.repository.create(user.toJSON())
+  constructor (Reposirory: new () => UserRepository) {
+    this.repository = new Reposirory()
+  }
+
+  async create (user: UserModel): Promise<UserModel> {
+    const input = user.toJSON()
+    const result = await this.repository.create(input)
+    const output = UserModel.create(result)
+    return output
   }
 
   async getByEmail (email: string): Promise<UserModel> {
@@ -15,15 +22,16 @@ export default class UserDBGateway {
     return user
   }
 
-  async update (user: UserModel): Promise<UserEntity> {
-    return await this.repository.update(user.toJSON())
+  async update (user: UserModel): Promise<void> {
+    await this.repository.update(user.toJSON())
   }
 
   async deleteByEmail (email: string): Promise<void> {
-    return await this.repository.deleteByEmail(email)
+    await this.repository.deleteByEmail(email)
   }
 
   async existByEmail (email: string): Promise<boolean> {
-    return await this.repository.existByEmail(email)
+    const result = await this.repository.existByEmail(email)
+    return result
   }
 }

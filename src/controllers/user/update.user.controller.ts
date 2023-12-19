@@ -2,9 +2,14 @@ import type { UserRepository } from 'domain/repositories'
 import { UserUpdateUseCase } from 'use-cases/user'
 import type { UnsuccessfullResponse } from 'controllers/definitions'
 import { SessionModel } from 'domain/models'
+import { UserDBGateway } from 'gateways/databases'
 
 export default class UserUpdateController {
-  constructor (private readonly repository: UserRepository) { }
+  private readonly dbGateway: UserDBGateway
+
+  constructor (Repository: new () => UserRepository) {
+    this.dbGateway = new UserDBGateway(Repository)
+  }
 
   async exe (
     headers: any,
@@ -19,7 +24,7 @@ export default class UserUpdateController {
       const newEmail = body.newEmail ?? undefined
       const newPassword = body.newPassword ?? undefined
       const newPasswordConfirmation = body.newPasswordConfirmation ?? undefined
-      const useCase = new UserUpdateUseCase(this.repository)
+      const useCase = new UserUpdateUseCase(this.dbGateway)
       await useCase.exe(
         email,
         password,

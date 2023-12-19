@@ -4,9 +4,14 @@ import type {
   SuccessfullResponse,
   UnsuccessfullResponse
 } from 'controllers/definitions'
+import { UserDBGateway } from 'gateways/databases'
 
 export default class UserCreateController {
-  constructor (private readonly repository: UserRepository) { }
+  private readonly dbGateway: UserDBGateway
+
+  constructor (Repository: new () => UserRepository) {
+    this.dbGateway = new UserDBGateway(Repository)
+  }
 
   async exe (
     body: any,
@@ -17,7 +22,7 @@ export default class UserCreateController {
     const password = body.password
     const passwordConfirmation = body.passwordConfirmation
     try {
-      const useCase = new UserCreateUseCase(this.repository)
+      const useCase = new UserCreateUseCase(this.dbGateway)
       await useCase.exe(
         email,
         password,

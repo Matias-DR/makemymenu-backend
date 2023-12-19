@@ -5,9 +5,14 @@ import type {
   UnsuccessfullResponse
 } from 'controllers/definitions'
 import { SessionModel } from 'domain/models'
+import { SessionDBGateway } from 'gateways/databases'
 
 export default class SessionUpdateByRefreshTokenController {
-  constructor (private readonly repository: SessionRepository) { }
+  private readonly dbGateway: SessionDBGateway
+
+  constructor (Repository: new () => SessionRepository) {
+    this.dbGateway = new SessionDBGateway(Repository)
+  }
 
   public async exe (
     headers: any,
@@ -16,7 +21,7 @@ export default class SessionUpdateByRefreshTokenController {
   ): Promise<void> {
     try {
       const refreshToken = SessionModel.extractTokenFromHeaders(headers)
-      const useCase = new SessionUpdateByRefreshTokenUseCase(this.repository)
+      const useCase = new SessionUpdateByRefreshTokenUseCase(this.dbGateway)
       const session = await useCase.exe(refreshToken)
       success(
         200,

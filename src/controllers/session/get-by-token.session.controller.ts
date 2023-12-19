@@ -8,17 +8,20 @@ import type {
   SuccessfullResponse,
   UnsuccessfullResponse
 } from 'controllers/definitions'
+import type { SessionGateway } from 'domain/gateways'
+import { SessionDBGateway } from 'gateways/databases'
 
 export default class SessionGetByTokenController {
   protected readonly useCase:
   SessionGetByRefreshTokenUseCase | SessionGetByAccessTokenUseCase
 
   constructor (
-    repository: SessionRepository,
-    UseCase: new (repository: SessionRepository) =>
+    Repository: new () => SessionRepository,
+    UseCase: new (dbGateway: SessionGateway) =>
     SessionGetByRefreshTokenUseCase | SessionGetByAccessTokenUseCase
   ) {
-    this.useCase = new UseCase(repository)
+    const gbGateway = new SessionDBGateway(Repository)
+    this.useCase = new UseCase(gbGateway)
   }
 
   protected async exe (

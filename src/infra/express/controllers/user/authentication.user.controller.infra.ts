@@ -12,9 +12,9 @@ import type {
 export class UserAuthenticationControllerInfra extends ControllerInfra {
   private readonly controller: UserAuthenticationController
 
-  constructor (UserRepository: new () => UserRepository) {
+  constructor (Repository: new () => UserRepository) {
     super()
-    this.controller = new UserAuthenticationController(new UserRepository())
+    this.controller = new UserAuthenticationController(Repository)
   }
 
   async exe (

@@ -5,9 +5,14 @@ import type {
   UnsuccessfullResponse
 } from 'controllers/definitions'
 import { SessionModel } from 'domain/models'
+import { UserDBGateway } from 'gateways/databases'
 
 export default class UserGetByEmailController {
-  constructor (private readonly repository: UserRepository) { }
+  private readonly dbGateway: UserDBGateway
+
+  constructor (Repository: new () => UserRepository) {
+    this.dbGateway = new UserDBGateway(Repository)
+  }
 
   async exe (
     headers: any,
@@ -17,7 +22,7 @@ export default class UserGetByEmailController {
     try {
       const accessToken = SessionModel.extractTokenFromHeaders(headers)
       const email = SessionModel.decode(accessToken)
-      const useCase = new UserGetByEmailUseCase(this.repository)
+      const useCase = new UserGetByEmailUseCase(this.dbGateway)
       const result = await useCase.exe(email)
       success(
         200,

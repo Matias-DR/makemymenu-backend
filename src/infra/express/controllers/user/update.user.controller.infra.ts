@@ -12,9 +12,9 @@ import type {
 export class UserUpdateControllerInfra extends ControllerInfra {
   private readonly controller: UserUpdateController
 
-  constructor (UserRepository: new () => UserRepository) {
+  constructor (Repository: new () => UserRepository) {
     super()
-    this.controller = new UserUpdateController(new UserRepository())
+    this.controller = new UserUpdateController(Repository)
   }
 
   async exe (

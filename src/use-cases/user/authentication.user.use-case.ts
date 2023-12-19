@@ -1,15 +1,10 @@
 import { UserModel } from 'domain/models'
-import type { UserRepository } from 'domain/repositories'
 import { WrongPasswordUserException } from 'domain/exceptions/user.exceptions'
 import { NotFoundOperationException } from 'domain/exceptions/operation.exceptions'
-import { UserDBGateway } from 'gateways/databases'
+import type { UserGateway } from 'domain/gateways'
 
 export default class UserAuthenticationUseCase {
-  private readonly dbGateway: UserDBGateway
-
-  constructor (private readonly repository: UserRepository) {
-    this.dbGateway = new UserDBGateway(this.repository)
-  }
+  constructor (private readonly dbGateway: UserGateway) { }
 
   async exe (
     email: string,
