@@ -19,8 +19,7 @@ const sessionVerifyMdd = async (
     // Si el token es inválido levanto error
     SessionModel.test(accessToken)
 
-    const repository = new SessionMongoDBRepositoryInfra()
-    const dbGateway = new SessionDBGateway(repository)
+    const dbGateway = new SessionDBGateway(SessionMongoDBRepositoryInfra)
 
     if (!isForUpdTkn) {
       if (!await dbGateway.existByAccessToken(accessToken)) {

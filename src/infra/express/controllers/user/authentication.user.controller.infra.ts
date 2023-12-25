@@ -1,10 +1,15 @@
 import { UserAuthenticationController } from 'controllers/user'
-import type { UserRepository } from 'domain/repositories'
+import type {
+  UserRepository,
+  SessionRepository
+} from 'domain/repositories'
 import ControllerInfra from '../controller.infra'
-import { UserMongoDBRepositoryInfra } from 'infra/mongoose/repositories'
+import {
+  SessionMongoDBRepositoryInfra,
+  UserMongoDBRepositoryInfra
+} from 'infra/mongoose/repositories'
 
 import type {
-  NextFunction,
   Request,
   Response
 } from 'express'
@@ -12,30 +17,37 @@ import type {
 export class UserAuthenticationControllerInfra extends ControllerInfra {
   private readonly controller: UserAuthenticationController
 
-  constructor (Repository: new () => UserRepository) {
+  constructor (
+    UserRepository: new () => UserRepository,
+    SessionRepository: new () => SessionRepository
+  ) {
     super()
-    this.controller = new UserAuthenticationController(Repository)
+    this.controller = new UserAuthenticationController(
+      UserRepository,
+      SessionRepository
+    )
   }
 
   async exe (
     req: Request,
-    res: Response,
-    next: NextFunction
+    res: Response
   ): Promise<void> {
     this.res = res
     await this.controller.exe(
       req.body,
       this.error,
-      next
+      this.success
     )
   }
 }
 
 export const mongoose = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<void> => {
-  const controller = new UserAuthenticationControllerInfra(UserMongoDBRepositoryInfra)
-  await controller.exe(req, res, next)
+  const controller = new UserAuthenticationControllerInfra(
+    UserMongoDBRepositoryInfra,
+    SessionMongoDBRepositoryInfra
+  )
+  await controller.exe(req, res)
 }

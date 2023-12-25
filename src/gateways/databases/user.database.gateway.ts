@@ -12,13 +12,13 @@ export default class UserDBGateway implements UserGateway {
   async create (user: UserModel): Promise<UserModel> {
     const input = user.toJSON()
     const result = await this.repository.create(input)
-    const output = UserModel.create(result)
+    const output = new UserModel(result)
     return output
   }
 
   async getByEmail (email: string): Promise<UserModel> {
     const result = await this.repository.getByEmail(email)
-    const user = UserModel.create(result)
+    const user = new UserModel(result)
     return user
   }
 
@@ -30,8 +30,17 @@ export default class UserDBGateway implements UserGateway {
     await this.repository.deleteByEmail(email)
   }
 
+  async providerDeleteByEmail (email: string): Promise<void> {
+    await this.repository.providerDeleteByEmail(email)
+  }
+
   async existByEmail (email: string): Promise<boolean> {
     const result = await this.repository.existByEmail(email)
+    return result
+  }
+
+  async providerExistByEmail (email: string): Promise<boolean> {
+    const result = await this.repository.providerExistByEmail(email)
     return result
   }
 }

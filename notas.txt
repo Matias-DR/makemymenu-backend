@@ -1,0 +1,53 @@
+MANTENER EL SISTEMA PARALELO DE INICIO DE SESIÓN
+ADAPTAR EL INICIO DE MODULOS EXTERNOS, TAL COMO POR EJEMPLO, SOLO ACTUALIZAR EL TOKEN CUANDO NOS LO PIDEN DE MANERA EXPLICITA, ES DECIR, NO ACTUALIZARLO A LA PAR DE UPDATEAR EL USUARIO EN EJEMPLO
+
+passwords
+  id: <id>
+  userId: <id>
+
+create-user:
+  front → back - user:
+    id? = <id>
+    email = name
+  front → back - account
+    id?: <id>
+    provider: 'credentials'
+    type: 'jwt'
+    access_token: '<jwt>'
+    expires_at: '<timestamp>'
+    token_type: "Bearer"
+    id_token: '<jwt>'
+    userId: <id>
+
+this.updateUser()
+
+
+this.deleteUser()
+this.authentication()
+this.providerAuthentication()
+this.updateSession()
+this.deleteSession()
+this.getSessionByProviderEmail()
+
+
+users
+_id: 658520af936dd477988da455
+name: "Matias Diz Rendani"
+email: "matias.dddrrr@gmail.com"
+image: "https://lh3.googleusercontent.com/a/ACg8ocLJwNXsQQev2DSDHU_MvR6kI4Ha3I…"
+emailVerified: null
+→
+name, email, image, emailVerified
+
+accounts
+_id: 658520af936dd477988da456
+provider: "google"
+type: "oauth"
+providerAccountId: "108958515305606526033"
+access_token: "ya29.a0AfB_byAJupJUZC7VQ0AUfQH1cicoaqZkyoNfQmt1PrtQom2Sf4oeVaeaKa2IE7Y…"
+expires_at: 1703227070
+scope: "https://www.googleapis.com/auth/userinfo.profile https://www.googleapi…"
+token_type: "Bearer"
+id_token: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjliMDI4NWMzMWJmZDhiMDQwZTAzMTU3YjE5YzRlOT…"
+userId: 658520af936dd477988da455
+→ provider, access_token, expires_at, id_token, user_id

@@ -7,13 +7,13 @@ import {
   userUpdateControllerInfra
 } from './controllers/user'
 import {
-  sessionCreateControllerInfra,
+  // sessionCreateControllerInfra,
   // sessionGetByRefreshTokenControllerInfra,
   // sessionGetByAccessTokenControllerInfra,
   sessionDeleteByRefreshTokenControllerInfra,
   sessionDeleteByAccessTokenControllerInfra,
-  sessionUpdateByRefreshTokenController,
-  sessionUpdateByAccessTokenController
+  sessionUpdateByRefreshTokenControllerInfra
+  // sessionUpdateByAccessTokenController
 } from './controllers/session'
 import {
   verifySessionMdd,
@@ -77,8 +77,7 @@ export default class RouterMongooseInfra {
     this.userRouter.patch(
       '/',
       verifySessionMdd,
-      userUpdateControllerInfra,
-      sessionUpdateByAccessTokenController
+      userUpdateControllerInfra
     )
   }
 
@@ -89,14 +88,18 @@ export default class RouterMongooseInfra {
       userDeleteControllerInfra,
       sessionDeleteByAccessTokenControllerInfra
     )
+    this.userRouter.delete(
+      '/provider',
+      userDeleteControllerInfra,
+      sessionDeleteByAccessTokenControllerInfra
+    )
   }
 
   private authentication (): void {
     this.authRouter.post(
       '/',
       verifySessionForAuthMdd,
-      userAuthenticationControllerInfra,
-      sessionCreateControllerInfra
+      userAuthenticationControllerInfra
     )
   }
 
@@ -104,7 +107,7 @@ export default class RouterMongooseInfra {
     this.sessionRouter.patch(
       '/',
       verifySessionForTokenUpdateMdd,
-      sessionUpdateByRefreshTokenController
+      sessionUpdateByRefreshTokenControllerInfra
     )
   }
 

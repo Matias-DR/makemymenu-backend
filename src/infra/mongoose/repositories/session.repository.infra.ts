@@ -3,19 +3,32 @@ import type { SessionRepository } from 'domain/repositories'
 import { SessionModelInfra } from 'infra/mongoose/models'
 
 export default class SessionMongoDBRepositoryInfra implements SessionRepository {
+  private readonly resultAdapter = (res: any): SessionEntity => {
+    const result = res?.toJSON()
+    return {
+      ...result,
+      id: result._id
+    }
+  }
+
   async create (tokens: SessionEntity): Promise<SessionEntity> {
     return await SessionModelInfra.create(tokens)
-      .then((res: any) => res?.toJSON())
+      .then((res: any) => this.resultAdapter(res))
   }
 
   async getByRefreshToken (refreshToken: string): Promise<SessionEntity> {
     return await SessionModelInfra.findOne({ refreshToken })
-      .then((res: any) => res?.toJSON())
+      .then((res: any) => this.resultAdapter(res))
   }
 
   async getByAccessToken (accessToken: string): Promise<SessionEntity> {
     return await SessionModelInfra.findOne({ accessToken })
-      .then((res: any) => res?.toJSON())
+      .then((res: any) => this.resultAdapter(res))
+  }
+
+  async getByUserId (userId: string): Promise<SessionEntity> {
+    return await SessionModelInfra.findOne({ userId })
+      .then((res: any) => this.resultAdapter(res))
   }
 
   async update (
@@ -43,6 +56,11 @@ export default class SessionMongoDBRepositoryInfra implements SessionRepository 
 
   async existByAccessToken (accessToken: string): Promise<boolean> {
     return await SessionModelInfra.exists({ accessToken })
+      .then((res: any) => res)
+  }
+
+  async existByUserId (userId: string): Promise<boolean> {
+    return await SessionModelInfra.exists({ userId })
       .then((res: any) => res)
   }
 }

@@ -20,8 +20,10 @@ import {
 } from 'jsonwebtoken'
 
 export default class SessionModel implements SessionEntity {
+  private readonly _id?: string
   private _refreshToken: string
   private _accessToken: string
+  private readonly _userId?: string
 
   public static extractTokenFromHeaders (headers: any): string {
     const authorizationHeader = headers.authorization
@@ -75,8 +77,10 @@ export default class SessionModel implements SessionEntity {
   }
 
   constructor (session: SessionEntity) {
+    this._id = session.id
     this._refreshToken = session.refreshToken
     this._accessToken = session.accessToken
+    this._userId = session.userId
   }
 
   public get refreshToken (): string {

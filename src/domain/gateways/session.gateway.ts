@@ -9,4 +9,6 @@ export default interface SessionGateway {
   deleteByAccessToken: (accessToken: string) => Promise<void>
   existByRefreshToken: (refreshToken: string) => Promise<boolean>
   existByAccessToken: (accessToken: string) => Promise<boolean>
+  existByUserId: (userId: string) => Promise<boolean>
+  getByUserId: (userId: string) => Promise<SessionModel>
 }

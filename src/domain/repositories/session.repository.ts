@@ -8,8 +8,10 @@ export default interface SessionRepository {
   ) => Promise<void>
   getByRefreshToken: (refreshToken: string) => Promise<SessionEntity>
   getByAccessToken: (accessToken: string) => Promise<SessionEntity>
+  getByUserId: (userId: string) => Promise<SessionEntity>
   deleteByRefreshToken: (refreshToken: string) => Promise<void>
   deleteByAccessToken: (accessToken: string) => Promise<void>
   existByRefreshToken: (refreshToken: string) => Promise<boolean>
   existByAccessToken: (accessToken: string) => Promise<boolean>
+  existByUserId: (userId: string) => Promise<boolean>
 }

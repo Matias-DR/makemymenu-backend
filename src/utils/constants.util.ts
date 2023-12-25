@@ -2,6 +2,7 @@ import 'dotenv/config'
 
 export const MONGODB_URI = process.env.MONGODB_URI as string
 export const MONGODB_SELECTED_DB = process.env.MONGODB_SELECTED_DB as string
+export const MONGODB_PROVIDER_DB = process.env.MONGODB_PROVIDER_DB as string
 
 export const JWT_SECRET = process.env.JWT_SECRET as string
 

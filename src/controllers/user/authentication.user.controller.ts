@@ -1,29 +1,47 @@
 import { UserAuthenticationUseCase } from 'use-cases/user'
-import type { UnsuccessfullResponse } from 'controllers/definitions'
-import type { UserRepository } from 'domain/repositories'
-import { UserDBGateway } from 'gateways/databases'
+import type { SuccessfullResponse, UnsuccessfullResponse } from 'controllers/definitions'
+import type {
+  UserRepository,
+  SessionRepository
+} from 'domain/repositories'
+import {
+  UserDBGateway,
+  SessionDBGateway
+} from 'gateways/databases'
 
 export default class UserAuthenticationController {
-  private readonly dbGateway: UserDBGateway
+  private readonly userDBGateway: UserDBGateway
+  private readonly sessionDBGateway: SessionDBGateway
 
-  constructor (Repository: new () => UserRepository) {
-    this.dbGateway = new UserDBGateway(Repository)
+  constructor (
+    UserRepository: new () => UserRepository,
+    SessionRepository: new () => SessionRepository
+  ) {
+    this.userDBGateway = new UserDBGateway(UserRepository)
+    this.sessionDBGateway = new SessionDBGateway(SessionRepository)
   }
 
   async exe (
     body: any,
     error: UnsuccessfullResponse,
-    next: () => void
+    success: SuccessfullResponse
   ): Promise<void> {
     try {
       const email = body.email
       const password = body.password
-      const useCase = new UserAuthenticationUseCase(this.dbGateway)
-      await useCase.exe(
+      const useCase = new UserAuthenticationUseCase(
+        this.userDBGateway,
+        this.sessionDBGateway
+      )
+      const output = await useCase.exe(
         email,
         password
       )
-      next()
+      const session = {
+        accessToken: output.accessToken,
+        refreshToken: output.refreshToken
+      }
+      success(200, session)
     } catch (err: any) {
       error(err)
     }

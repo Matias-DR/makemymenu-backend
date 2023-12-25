@@ -14,7 +14,7 @@ export default class UserCreateUseCase {
     password: string,
     passwordConfirmation: string
   ): Promise<void> {
-    const user = new UserModel(email, password)
+    const user = new UserModel({ email, password })
     user.test()
     if (await this.dbGateway.existByEmail(user.email)) {
       throw new AlreadyExistOperationException()

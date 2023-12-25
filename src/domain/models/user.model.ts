@@ -16,22 +16,14 @@ import {
 } from 'bcrypt'
 
 export default class UserModel implements UserEntity {
+  private readonly _id?: string
   private _email: string
   private _password: string
 
-  public static create (user: UserEntity): UserModel {
-    return new UserModel(
-      user.email,
-      user.password
-    )
-  }
-
-  constructor (
-    email: string,
-    password: string
-  ) {
-    this._email = email
-    this._password = password
+  constructor (user: UserEntity) {
+    this._id = user.id
+    this._email = user.email
+    this._password = user.password
   }
 
   public get email (): string {
@@ -50,6 +42,10 @@ export default class UserModel implements UserEntity {
   public set password (password: string) {
     this.testPassword(password)
     this._password = password
+  }
+
+  public get id (): string | undefined {
+    return this._id
   }
 
   public isEmpty (value?: string): boolean {

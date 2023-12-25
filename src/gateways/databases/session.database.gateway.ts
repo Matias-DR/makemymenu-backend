@@ -27,12 +27,22 @@ export default class SessionDBGateway implements SessionGateway {
     return session
   }
 
+  async getByUserId (userId: string): Promise<SessionModel> {
+    const result = await this.repository.getByUserId(userId)
+    const session = new SessionModel(result)
+    return session
+  }
+
   async existByRefreshToken (token: string): Promise<boolean> {
     return await this.repository.existByRefreshToken(token)
   }
 
   async existByAccessToken (token: string): Promise<boolean> {
     return await this.repository.existByAccessToken(token)
+  }
+
+  async existByUserId (userId: string): Promise<boolean> {
+    return await this.repository.existByUserId(userId)
   }
 
   async update (session: SessionModel): Promise<void> {
