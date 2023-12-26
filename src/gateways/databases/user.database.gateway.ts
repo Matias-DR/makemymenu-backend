@@ -22,8 +22,8 @@ export default class UserDBGateway implements UserGateway {
     return user
   }
 
-  async update (user: UserModel): Promise<void> {
-    await this.repository.update(user.toJSON())
+  async update (email: string, user: UserModel): Promise<void> {
+    await this.repository.update(email, user.toJSON())
   }
 
   async deleteByEmail (email: string): Promise<void> {

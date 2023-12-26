@@ -1,7 +1,6 @@
-import { mongodb } from 'adapters/databases'
+import { mongoDBBaseConnection } from 'adapters/databases'
 
 import { Schema } from 'mongoose'
-import 'dotenv/config'
 
 const userModelScheme = new Schema({
   email: {
@@ -19,4 +18,4 @@ const userModelScheme = new Schema({
   versionKey: false
 })
 
-export default mongodb.model('Users', userModelScheme)
+export default mongoDBBaseConnection.model('Users', userModelScheme)

@@ -1,4 +1,4 @@
-import { mongodb } from 'adapters/databases'
+import { mongoDBBaseConnection } from 'adapters/databases'
 import { REFRESH_TOKEN_EXPIRES_IN } from 'utils/constants.util'
 
 import {
@@ -26,4 +26,4 @@ const sessionModelScheme = new Schema({
   versionKey: false
 })
 
-export default mongodb.model('Sessions', sessionModelScheme)
+export default mongoDBBaseConnection.model('Sessions', sessionModelScheme)

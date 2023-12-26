@@ -15,19 +15,19 @@ const sessionVerifyMdd = async (
   isForUpdTkn = false
 ): Promise<void> => {
   try {
-    const accessToken = SessionModel.extractTokenFromHeaders(headers)
+    const token = SessionModel.extractTokenFromHeaders(headers)
     // Si el token es inválido levanto error
-    SessionModel.test(accessToken)
+    SessionModel.test(token)
 
     const dbGateway = new SessionDBGateway(SessionMongoDBRepositoryInfra)
 
     if (!isForUpdTkn) {
-      if (!await dbGateway.existByAccessToken(accessToken)) {
+      if (!await dbGateway.existByAccessToken(token)) {
         // Si no existe la sesión levanto error
         throw new UnhauthorizedException()
       }
     } else {
-      if (!await dbGateway.existByRefreshToken(accessToken)) {
+      if (!await dbGateway.existByRefreshToken(token)) {
         // Si no existe la sesión levanto error
         throw new UnhauthorizedException()
       }

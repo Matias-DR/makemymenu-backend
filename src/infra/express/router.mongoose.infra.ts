@@ -12,13 +12,14 @@ import {
   // sessionGetByAccessTokenControllerInfra,
   sessionDeleteByRefreshTokenControllerInfra,
   sessionDeleteByAccessTokenControllerInfra,
-  sessionUpdateByRefreshTokenControllerInfra
-  // sessionUpdateByAccessTokenController
+  sessionUpdateByRefreshTokenControllerInfra,
+  sessionUpdateByAccessTokenControllerInfra
 } from './controllers/session'
 import {
   verifySessionMdd,
   verifySessionForAuthMdd,
-  verifySessionForTokenUpdateMdd
+  verifySessionForTokenUpdateMdd,
+  verifyProviderSessionMdd
 } from 'infra/express/middlewares'
 
 import { Router } from 'express'
@@ -77,7 +78,8 @@ export default class RouterMongooseInfra {
     this.userRouter.patch(
       '/',
       verifySessionMdd,
-      userUpdateControllerInfra
+      userUpdateControllerInfra,
+      sessionUpdateByAccessTokenControllerInfra
     )
   }
 
@@ -90,8 +92,8 @@ export default class RouterMongooseInfra {
     )
     this.userRouter.delete(
       '/provider',
-      userDeleteControllerInfra,
-      sessionDeleteByAccessTokenControllerInfra
+      verifyProviderSessionMdd,
+      userDeleteControllerInfra
     )
   }
 

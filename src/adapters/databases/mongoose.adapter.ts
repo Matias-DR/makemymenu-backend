@@ -3,17 +3,34 @@ import {
   createConnection
 } from 'mongoose'
 import {
-  MONGODB_URI,
-  MONGODB_SELECTED_DB
+  MONGODB_BASE_DB_URI,
+  MONGODB_PROVIDER_DB_URI
 } from 'utils/constants.util'
 
 class Database {
   private static instance: Database
-  private readonly connection: Connection
+  private _baseConnection: Connection
+  private _providerConnection: Connection
 
   private constructor () {
-    this.connection = createConnection(MONGODB_URI)
-    this.connection.useDb(MONGODB_SELECTED_DB)
+    this._baseConnection = createConnection(MONGODB_BASE_DB_URI)
+    this._providerConnection = createConnection(MONGODB_PROVIDER_DB_URI)
+  }
+
+  public get baseConnection (): Connection {
+    return this._baseConnection
+  }
+
+  public set baseConnection (connection: Connection) {
+    this._baseConnection = connection
+  }
+
+  public get providerConnection (): Connection {
+    return this._providerConnection
+  }
+
+  public set providerConnection (connection: Connection) {
+    this._providerConnection = connection
   }
 
   public static getInstance (): Database {
@@ -23,12 +40,15 @@ class Database {
     return Database.instance
   }
 
-  public getConnection (): Connection {
-    return this.connection
+  public getBaseConnection (): Connection {
+    return this.baseConnection
+  }
+
+  public getProviderConnection (): Connection {
+    return this.providerConnection
   }
 }
 
 const database = Database.getInstance()
-const connection = database.getConnection()
-
-export default connection
+export const baseConnection = database.getBaseConnection()
+export const providerConnection = database.getProviderConnection()

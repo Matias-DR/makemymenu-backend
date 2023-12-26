@@ -49,18 +49,22 @@ export default class SessionMongoDBRepositoryInfra implements SessionRepository 
     await SessionModelInfra.deleteOne({ accessToken })
   }
 
+  private exist (result: any): boolean {
+    return result !== null && result !== undefined
+  }
+
   async existByRefreshToken (refreshToken: string): Promise<boolean> {
     return await SessionModelInfra.exists({ refreshToken })
-      .then((res: any) => res)
+      .then((res: any) => this.exist(res))
   }
 
   async existByAccessToken (accessToken: string): Promise<boolean> {
     return await SessionModelInfra.exists({ accessToken })
-      .then((res: any) => res)
+      .then((res: any) => this.exist(res))
   }
 
   async existByUserId (userId: string): Promise<boolean> {
     return await SessionModelInfra.exists({ userId })
-      .then((res: any) => res)
+      .then((res: any) => this.exist(res))
   }
 }

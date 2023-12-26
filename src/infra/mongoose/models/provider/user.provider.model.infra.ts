@@ -1,22 +1,7 @@
-import { mongodb } from 'adapters/databases'
+import { mongoDBProviderConnection } from 'adapters/databases'
 
 import { Schema } from 'mongoose'
-import 'dotenv/config'
 
-const providerUserModelScheme = new Schema({
-  email: {
-    type: String,
-    required: [true, 'Email required'],
-    unique: true,
-    trim: true
-  },
-  password: {
-    type: String,
-    required: [true, 'Password required']
-  }
-}, {
-  timestamps: true,
-  versionKey: false
-})
+const providerUserModelScheme = new Schema({ email: String })
 
-export default mongodb.model('Users', providerUserModelScheme)
+export default mongoDBProviderConnection.model('Users', providerUserModelScheme)

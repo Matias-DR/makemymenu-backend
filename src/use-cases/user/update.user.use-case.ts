@@ -17,6 +17,6 @@ export default class UserUpdateUseCase {
       newPasswordConfirmation,
       password
     )
-    await this.dbGateway.update(user)
+    await this.dbGateway.update(email, user)
   }
 }

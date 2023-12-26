@@ -1,1 +1,2 @@
-export { default as mongodb } from './mongoose.adapter'
+export { baseConnection as mongoDBBaseConnection } from './mongoose.adapter'
+export { providerConnection as mongoDBProviderConnection } from './mongoose.adapter'

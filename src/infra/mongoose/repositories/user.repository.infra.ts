@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { type UserRepository } from 'domain/repositories'
 import type { UserEntity } from 'domain/entities'
 import {
@@ -5,6 +7,10 @@ import {
   UnsuccessfulOperationException
 } from 'domain/exceptions/operation.exceptions'
 import { UserModelInfra } from 'infra/mongoose/models'
+import {
+  ProviderUserModelScheme,
+  ProviderAccountModelScheme
+} from 'infra/mongoose/models/provider'
 
 export default class UserMongoDBRepositoryInfra implements UserRepository {
   private readonly resultAdapter = (res: any): UserEntity => {
@@ -32,9 +38,9 @@ export default class UserMongoDBRepositoryInfra implements UserRepository {
       .then((res: any) => this.resultAdapter(res))
   }
 
-  async update (user: UserEntity): Promise<void> {
+  async update (email: string, user: UserEntity): Promise<void> {
     await UserModelInfra.findOneAndUpdate(
-      { email: user.email },
+      { email },
       { $set: { ...user } },
       { runValidators: true, new: true }
     )
@@ -45,7 +51,9 @@ export default class UserMongoDBRepositoryInfra implements UserRepository {
   }
 
   async providerDeleteByEmail (email: string): Promise<void> {
-    await UserModelInfra.findOneAndDelete({ email })
+    const result = await ProviderUserModelScheme.findOneAndDelete({ email })
+    const userId = result!.toJSON()._id
+    await ProviderAccountModelScheme.findOneAndDelete({ userId })
   }
 
   async existByEmail (email: string): Promise<boolean> {
@@ -54,7 +62,7 @@ export default class UserMongoDBRepositoryInfra implements UserRepository {
   }
 
   async providerExistByEmail (email: string): Promise<boolean> {
-    return await UserModelInfra.exists({ email })
+    return await ProviderUserModelScheme.exists({ email })
       .then((res: any) => res)
   }
 }
