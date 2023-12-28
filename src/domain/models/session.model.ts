@@ -101,10 +101,10 @@ export default class SessionModel implements SessionEntity {
     this._accessToken = accessToken
   }
 
-  public update (): void {
+  public update (newEmail?: string): void {
     const email = SessionModel.decode(this._accessToken)
     this._accessToken = sign(
-      { email },
+      { email: newEmail ?? email },
       SECRET,
       { expiresIn: ACCESS_EXP_TIME }
     )

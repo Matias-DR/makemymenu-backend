@@ -25,16 +25,14 @@ export default class UserUpdateController {
       const newPassword = body.newPassword ?? undefined
       const newPasswordConfirmation = body.newPasswordConfirmation ?? undefined
       const useCase = new UserUpdateUseCase(this.dbGateway)
-      await useCase.exe(
+      const user = await useCase.exe(
         email,
         password,
         newEmail,
         newPassword,
         newPasswordConfirmation
       )
-      // await this.sessionUseCases.deleteByAccessToken(token)
-      // const result = await this.sessionUseCases.create(user)
-      // res.status(200).json(output)
+      body.user = user.toJSON()
       next()
     } catch (err: any) {
       error(err)

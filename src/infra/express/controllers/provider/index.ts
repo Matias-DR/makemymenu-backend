@@ -1,1 +1,1 @@
-export { mongoose as providerUserAccountDeleteControllerInfra } from './delete-user-account.provider.controller.infra'
+export { mongoose as providerUserDeleteControllerInfra } from './delete-user.provider.controller.infra'

@@ -30,8 +30,14 @@ export default class UserDBGateway implements UserGateway {
     await this.repository.deleteByEmail(email)
   }
 
-  async providerDeleteByEmail (email: string): Promise<void> {
-    await this.repository.providerDeleteByEmail(email)
+  async providerDeleteByEmail (
+    email: string,
+    provider: string
+  ): Promise<void> {
+    await this.repository.providerDeleteByEmail(
+      email,
+      provider
+    )
   }
 
   async existByEmail (email: string): Promise<boolean> {
@@ -39,8 +45,14 @@ export default class UserDBGateway implements UserGateway {
     return result
   }
 
-  async providerExistByEmail (email: string): Promise<boolean> {
-    const result = await this.repository.providerExistByEmail(email)
+  async providerExistByEmail (
+    email: string,
+    provider: string
+  ): Promise<boolean> {
+    const result = await this.repository.providerExistByEmail(
+      email,
+      provider
+    )
     return result
   }
 }

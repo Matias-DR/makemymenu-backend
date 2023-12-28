@@ -1,0 +1,39 @@
+import { SessionUpdateAfterUserUpdateController } from 'controllers/session'
+import Controller from '../controller.infra'
+import type { SessionRepository } from 'domain/repositories'
+import { SessionMongoDBRepositoryInfra } from 'infra/mongoose/repositories'
+
+import type {
+  Request,
+  Response
+} from 'express'
+
+export class SessionUpdateAfterUserUpdateControllerInfra extends Controller {
+  private readonly controller: SessionUpdateAfterUserUpdateController
+
+  constructor (Repository: new () => SessionRepository) {
+    super()
+    this.controller = new SessionUpdateAfterUserUpdateController(Repository)
+  }
+
+  async exe (
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    this.res = res
+    await this.controller.exe(
+      req.headers,
+      req.body,
+      this.success,
+      this.error
+    )
+  }
+}
+
+export async function mongoose (
+  req: Request,
+  res: Response
+): Promise<void> {
+  const controller = new SessionUpdateAfterUserUpdateControllerInfra(SessionMongoDBRepositoryInfra)
+  await controller.exe(req, res)
+}

@@ -27,7 +27,6 @@ export default class UserDeleteController {
         password
       )
       next()
-      // await this.sessionUseCases.deleteByAccessToken(token)
     } catch (err: any) {
       error(err)
     }

@@ -22,7 +22,8 @@ const sessionVerifyMdd = async (
     const dbGateway = new SessionDBGateway(SessionMongoDBRepositoryInfra)
 
     if (!isForUpdTkn) {
-      if (!await dbGateway.existByAccessToken(token)) {
+      const is = await dbGateway.existByAccessToken(token)
+      if (!is) {
         // Si no existe la sesión levanto error
         throw new UnhauthorizedException()
       }

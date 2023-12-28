@@ -1,1 +1,1 @@
-export { default as ProviderUserAccountDeleteController } from './delete-user-account.provider.controller'
+export { default as ProviderUserDeleteController } from './delete-user.provider.controller'

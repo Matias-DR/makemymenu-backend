@@ -4,10 +4,19 @@ import { NotFoundOperationException } from 'domain/exceptions/operation.exceptio
 export default class ProviderUserDeleteByEmailUseCase {
   constructor (private readonly dbGateway: UserGateway) { }
 
-  async exe (email: string): Promise<void> {
-    if (!await this.dbGateway.providerExistByEmail(email)) {
+  async exe (
+    email: string,
+    provider: string
+  ): Promise<void> {
+    if (!await this.dbGateway.providerExistByEmail(
+      email,
+      provider
+    )) {
       throw new NotFoundOperationException()
     }
-    await this.dbGateway.providerDeleteByEmail(email)
+    await this.dbGateway.providerDeleteByEmail(
+      email,
+      provider
+    )
   }
 }

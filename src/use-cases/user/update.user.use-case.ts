@@ -1,4 +1,5 @@
 import type { UserGateway } from 'domain/gateways'
+import type { UserModel } from 'domain/models'
 
 export default class UserUpdateUseCase {
   constructor (private readonly dbGateway: UserGateway) { }
@@ -9,7 +10,7 @@ export default class UserUpdateUseCase {
     newEmail?: string,
     newPassword?: string,
     newPasswordConfirmation?: string
-  ): Promise<void> {
+  ): Promise<UserModel> {
     const user = await this.dbGateway.getByEmail(email)
     await user.update(
       newEmail,
@@ -18,5 +19,6 @@ export default class UserUpdateUseCase {
       password
     )
     await this.dbGateway.update(email, user)
+    return user
   }
 }

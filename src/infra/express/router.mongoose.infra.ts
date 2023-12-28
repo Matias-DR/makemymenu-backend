@@ -13,14 +13,14 @@ import {
   sessionDeleteByRefreshTokenControllerInfra,
   sessionDeleteByAccessTokenControllerInfra,
   sessionUpdateByRefreshTokenControllerInfra,
-  sessionUpdateByAccessTokenControllerInfra
+  SessionUpdateAfterUserUpdateControllerInfra
 } from './controllers/session'
 import {
   verifySessionMdd,
   verifySessionForAuthMdd,
-  verifySessionForTokenUpdateMdd,
-  verifyProviderSessionMdd
+  verifySessionForTokenUpdateMdd
 } from 'infra/express/middlewares'
+import { providerUserDeleteControllerInfra } from './controllers/provider'
 
 import { Router } from 'express'
 
@@ -79,21 +79,20 @@ export default class RouterMongooseInfra {
       '/',
       verifySessionMdd,
       userUpdateControllerInfra,
-      sessionUpdateByAccessTokenControllerInfra
+      SessionUpdateAfterUserUpdateControllerInfra
     )
   }
 
   private deleteUser (): void {
-    this.userRouter.delete(
-      '/',
+    this.userRouter.post(
+      '/delete',
       verifySessionMdd,
       userDeleteControllerInfra,
       sessionDeleteByAccessTokenControllerInfra
     )
-    this.userRouter.delete(
-      '/provider',
-      verifyProviderSessionMdd,
-      userDeleteControllerInfra
+    this.userRouter.post(
+      '/delete-provider',
+      providerUserDeleteControllerInfra
     )
   }
 

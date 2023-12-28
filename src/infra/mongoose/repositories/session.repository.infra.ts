@@ -49,7 +49,7 @@ export default class SessionMongoDBRepositoryInfra implements SessionRepository 
     await SessionModelInfra.deleteOne({ accessToken })
   }
 
-  private exist (result: any): boolean {
+  private readonly exist = (result: any): boolean => {
     return result !== null && result !== undefined
   }
 

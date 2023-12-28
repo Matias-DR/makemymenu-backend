@@ -50,10 +50,15 @@ export default class UserMongoDBRepositoryInfra implements UserRepository {
     await UserModelInfra.findOneAndDelete({ email })
   }
 
-  async providerDeleteByEmail (email: string): Promise<void> {
-    const result = await ProviderUserModelScheme.findOneAndDelete({ email })
-    const userId = result!.toJSON()._id
-    await ProviderAccountModelScheme.findOneAndDelete({ userId })
+  async providerDeleteByEmail (
+    email: string,
+    provider: string
+  ): Promise<void> {
+    const userResult = await ProviderUserModelScheme.findOneAndDelete({ email })
+    await ProviderAccountModelScheme.findOneAndDelete({
+      userId: userResult?._id,
+      provider
+    })
   }
 
   async existByEmail (email: string): Promise<boolean> {
@@ -61,8 +66,15 @@ export default class UserMongoDBRepositoryInfra implements UserRepository {
       .then((res: any) => res)
   }
 
-  async providerExistByEmail (email: string): Promise<boolean> {
-    return await ProviderUserModelScheme.exists({ email })
-      .then((res: any) => res)
+  async providerExistByEmail (
+    email: string,
+    provider: string
+  ): Promise<boolean> {
+    const userResult = await ProviderUserModelScheme.exists({ email })
+    const accountResult = await ProviderAccountModelScheme.exists({
+      userId: userResult?._id,
+      provider
+    })
+    return userResult !== null && accountResult !== null
   }
 }

@@ -5,7 +5,7 @@ export default interface UserRepository {
   getByEmail: (email: string) => Promise<UserEntity>
   update: (email: string, user: UserEntity) => Promise<void>
   deleteByEmail: (email: string) => Promise<void>
-  providerDeleteByEmail: (email: string) => Promise<void>
+  providerDeleteByEmail: (email: string, provider: string) => Promise<void>
   existByEmail: (email: string) => Promise<boolean>
-  providerExistByEmail: (email: string) => Promise<boolean>
+  providerExistByEmail: (email: string, provider: string) => Promise<boolean>
 }

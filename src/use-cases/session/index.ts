@@ -5,3 +5,4 @@ export { default as SessionUpdateByRefreshTokenUseCase } from './update-by-refre
 export { default as SessionUpdateByAccessTokenUseCase } from './update-by-acces-token.session.use-case'
 export { default as SessionDeleteByRefreshTokenUseCase } from './delete-by-refresh-token.session.use-case'
 export { default as SessionDeleteByAccessTokenUseCase } from './delete-by-access-token.session.use-case'
+export { default as SessionUpdateAfterUserUpdateUseCase } from './update-after-user-update.session.use-case'
